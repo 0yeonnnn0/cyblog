@@ -1,5 +1,5 @@
 datasource db {
-  provider = "postgresql"
+  provider = "mongodb"
   url      = env("DATABASE_URL")
 }
 
@@ -8,23 +8,23 @@ generator client {
 }
 
 model Post {
-  id        Int      @id @default(autoincrement()) // 고유 ID (필수값)
-  createdAt DateTime @default(now())              // 작성 날짜
-  content   String                                   // 내용
-  likes     Int      @default(0)                 // 좋아요 수 (기본값: 0)
+  id        String   @id @default(auto()) @map("_id") @db.ObjectId
+  createdAt DateTime @default(now())
+  content   String
+  likes     Int      @default(0)
 }
 
 model User {
-  id        Int     @id @default(autoincrement())
-  email     String  @unique
+  id        String   @id @default(auto()) @map("_id") @db.ObjectId
+  email     String   @unique
   pw        String
   name      String
-  isLogin   Boolean @default(false)
+  isLogin   Boolean  @default(false)
   createdAt DateTime @default(now())
 }
 
 model Guestbook {
-  id        Int     @id @default(autoincrement())
+  id        String   @id @default(auto()) @map("_id") @db.ObjectId
   guestName String
   pw        String
   createdAt DateTime @default(now())
