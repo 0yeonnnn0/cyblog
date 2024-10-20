@@ -1,0 +1,31 @@
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+model Post {
+  id        Int      @id @default(autoincrement()) // 고유 ID (필수값)
+  createdAt DateTime @default(now())              // 작성 날짜
+  content   String                                   // 내용
+  likes     Int      @default(0)                 // 좋아요 수 (기본값: 0)
+}
+
+model User {
+  id        Int     @id @default(autoincrement())
+  email     String  @unique
+  pw        String
+  name      String
+  isLogin   Boolean @default(false)
+  createdAt DateTime @default(now())
+}
+
+model Guestbook {
+  id        Int     @id @default(autoincrement())
+  guestName String
+  pw        String
+  createdAt DateTime @default(now())
+}

@@ -1,0 +1,503 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --background: #ffffff;
+  --foreground: #171717;
+}
+
+@font-face {
+  font-family: "DungGeunMo";
+  font-style: normal;
+  font-weight: normal;
+  src: url("/fonts/DungGeunMo.woff") format("woff");
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --background: #0a0a0a;
+    --foreground: #ededed;
+  }
+}
+
+body {
+  color: var(--foreground);
+  background: var(--background);
+  font-family: Arial, Helvetica, sans-serif;
+}
+
+@layer utilities {
+  .text-balance {
+    text-wrap: balance;
+  }
+}
+
+html,
+body,
+div,
+span,
+applet,
+object,
+iframe,
+h1,
+h2,
+h3,
+h4,
+h5,
+h6,
+p,
+blockquote,
+pre,
+a,
+abbr,
+acronym,
+address,
+big,
+cite,
+code,
+del,
+dfn,
+em,
+img,
+ins,
+kbd,
+q,
+s,
+samp,
+small,
+strike,
+strong,
+sub,
+sup,
+tt,
+var,
+b,
+u,
+i,
+center,
+dl,
+dt,
+dd,
+ol,
+ul,
+li,
+fieldset,
+form,
+label,
+legend,
+table,
+caption,
+tbody,
+tfoot,
+thead,
+tr,
+th,
+td,
+article,
+aside,
+canvas,
+details,
+embed,
+figure,
+figcaption,
+footer,
+header,
+hgroup,
+menu,
+nav,
+output,
+ruby,
+section,
+summary,
+time,
+mark,
+audio,
+video {
+  margin: 0;
+  padding: 0;
+  border: 0;
+  font-size: 100%;
+  font: inherit;
+  vertical-align: baseline;
+}
+/* HTML5 display-role reset for older browsers */
+article,
+aside,
+details,
+figcaption,
+figure,
+footer,
+header,
+hgroup,
+menu,
+nav,
+section {
+  display: block;
+}
+body {
+  line-height: 1;
+}
+ol,
+ul {
+  list-style: none;
+}
+blockquote,
+q {
+  quotes: none;
+}
+blockquote:before,
+blockquote:after,
+q:before,
+q:after {
+  content: "";
+  content: none;
+}
+table {
+  border-collapse: collapse;
+  border-spacing: 0;
+}
+
+/* 여기까지 CSS 초기화 */
+
+.navbar {
+  position: block;
+  height: 56px;
+}
+
+.user-name {
+  width: 160px;
+}
+
+.main-container {
+  display: grid;
+  grid-template-columns: 230px 230px;
+  grid-template-rows: 140px;
+  gap: 10px;
+  margin-left: 5px;
+  overflow-x: hidden;
+  overflow-y: auto;
+}
+
+.recent-notes-word {
+  margin: 0px 0px -10px 5px;
+}
+
+.recent-notes hr {
+  margin-bottom: 5px;
+}
+
+.announcement-word {
+  margin: 0px 0px -10px 5px;
+}
+
+.announcement hr {
+  margin-bottom: 5px;
+}
+
+.main-note-title {
+  float: left;
+  width: 170px;
+  height: 24px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  margin-left: 0px;
+  margin: 0px 0px 0px 5px;
+}
+
+.main-note-date {
+  float: right;
+  width: 45px;
+  margin: 0px;
+}
+
+#ifleft {
+  display: inline-block;
+  background-color: white;
+  width: 90%;
+  height: 90%;
+  border-radius: 20px;
+  position: relative;
+  left: 20px;
+  top: 65px;
+  border: solid #aaaaaa;
+}
+
+#ifright {
+  display: inline-block;
+  background-color: white;
+  width: 95%;
+  height: 90%;
+  border-radius: 20px;
+  position: relative;
+  top: 65px;
+  left: 10px;
+  border: solid #aaaaaa;
+  border-right: none;
+}
+
+.error-404 {
+  font-family: "Ubuntu";
+  text-align: center;
+}
+
+.invisible-tag {
+  display: none;
+}
+
+.관리자채팅 {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.switch {
+  appearance: none;
+  position: relative;
+  border: max(2px, 0.1em) solid gray;
+  border-radius: 1.25em;
+  width: 2.25em;
+  height: 1.25em;
+  cursor: pointer;
+  margin-left: 10px;
+}
+
+.switch::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  width: 1em;
+  height: 1em;
+  border-radius: 50%;
+  transform: scale(0.8);
+  background-color: gray;
+  transition: left 250ms linear;
+}
+
+.switch:checked {
+  background-color: rgba(42, 161, 194);
+  border-color: rgba(42, 161, 194);
+}
+
+.switch:checked::before {
+  background-color: white;
+  left: 1em;
+}
+
+.switch:enabled:hover {
+  box-shadow: 0 0 0 max(3px, 0.2em) lightgray;
+}
+
+.games {
+  width: 484px;
+  height: 250px;
+  background-color: aliceblue;
+  margin-top: -15px;
+  text-align: center;
+  padding: 10px;
+}
+
+#screen {
+  width: 300px;
+  height: 200px;
+  text-align: center;
+  user-select: none;
+  margin: auto;
+}
+
+#screen.waiting {
+  background-color: rgb(166, 194, 243);
+}
+
+#screen.ready {
+  background-color: rgb(217, 133, 133);
+}
+
+#screen.now {
+  background-color: rgb(153, 211, 146);
+}
+
+#screen.restart {
+  background-color: rgb(172, 172, 172);
+}
+
+.game-username {
+  width: 100px;
+}
+.game-avgtime {
+  width: 100px;
+}
+.reaction-rank-btn {
+  margin: 10px;
+}
+
+.reaction-ranking-list {
+  display: grid;
+  grid-template-columns: 210px 210px;
+  grid-template-rows: repeat(5, 30px);
+  gap: 10px;
+  padding-left: 17px;
+  margin-bottom: 10px;
+}
+.reaction-ranking-rank {
+  display: flex;
+  justify-content: space-between;
+  padding: 0 10px;
+  align-items: baseline;
+}
+
+/* calendar.css */
+.react-calendar {
+  border: none;
+  font-size: 16px;
+  font-family: "굴림";
+}
+
+.react-calendar__navigation {
+  display: flex;
+  height: 32px;
+}
+
+.react-calendar__navigation button {
+  min-width: 44px;
+  background: none;
+}
+
+.react-calendar__navigation__label {
+  flex: 1 1;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+/* 년-월 */
+.react-calendar__navigation__label > span {
+  font-weight: bold;
+}
+
+/* 요일 */
+react-calendar__month-view__weekdays {
+  text-align: center;
+  justify-content: center;
+  align-items: center;
+  text-transform: uppercase;
+  font: inherit;
+  font-size: 0.75em;
+  font-weight: bold;
+}
+.react-calendar__month-view__weekdays__weekday {
+  font-size: 14px;
+  font-weight: bold;
+  margin-bottom: 10px;
+  padding: 0.5em;
+}
+
+.react-calendar__month-view__weekdays__weekday--weekend {
+  color: #d10000;
+}
+
+/* 일자 */
+.react-calendar__tile {
+  padding: 3px 6px;
+  display: flex;
+  flex-direction: column;
+  text-align: center;
+  align-items: center;
+  color: gray;
+}
+
+/* 오늘 날짜 */
+.react-calendar__tile--now {
+  background: none;
+}
+/* 선택된 날짜의 배경색 없애기 */
+.react-calendar__tile--active {
+  background: none;
+  color: gray;
+  box-shadow: 0 0 0 1px #2a9fc2 inset;
+  border-radius: 100%;
+}
+
+.react-calendar__tile--hasActive {
+  background: none;
+}
+
+.react-calendar__tile--active:enabled:hover,
+.react-calendar__tile--active:enabled:focus {
+  background: none;
+}
+.react-calendar__tile--now:enabled:hover,
+.react-calendar__tile--now:enabled:focus {
+  background: none;
+}
+
+.bold-date {
+  font-weight: bold !important;
+  color: black;
+}
+
+/* BlogPage.jsx */
+.blog-content {
+  font-family: "굴림";
+  font-size: 14px;
+}
+
+/* guestbook.css */
+
+/* GuestbookPage.jsx */
+.guestbook-form {
+  @apply bg-[#f0f8ff] rounded-[10px];
+}
+
+/* GBForm.jsx */
+.guestbook-post {
+  @apply flex flex-col bg-white border-gray-300 border-2 border-solid rounded-lg p-2 mb-4;
+}
+.guestbook-upload {
+  @apply w-full pt-[5px];
+}
+.guestbook-upload-btn {
+  @apply w-[50px] h-[35px] text-sm rounded-[10px];
+}
+
+/* GBUserInput.jsx */
+.guestbook-user-info {
+  @apply float-left w-[120px] h-full border-t-2 border-solid border-collapse p-1;
+}
+.guestbook-logged-in {
+  @apply bg-[#e4e4e4b3] text-gray-500;
+}
+
+/* GBTextArea.jsx */
+.guestbook-textarea {
+  @apply w-full p-1 overflow-hidden break-words resize-none outline-none;
+}
+
+/* GBContents.jsx */
+.guestbook-comments {
+  @apply flex flex-col gap-1 py-[14px] px-[5px] border-b border-solid border-gray-300;
+}
+
+.guestbook-username {
+  @apply inline font-bold font-mono text-[#6a6a6a] ml-[5px];
+}
+.guestbook-upload-date {
+  @apply text-gray-500 mb-[2px];
+}
+
+/* profile.css */
+
+.profile-container {
+  @apply grid gap-[23px] pr-[10px] ;
+  grid-template-columns: 1fr 2fr;
+}
+
+.profile-pic {
+  @apply h-[210px] rounded-[10px];
+}
+
+.profile-note {
+  grid-column: 1 / span 2;
+}
+
