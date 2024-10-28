@@ -1,9 +1,8 @@
 import { NextResponse } from "next/server";
-import { getAuth, createUserWithEmailAndPassword } from "firebase/auth";
-import { auth } from "../../../../lib/firebase";
+import { createUserWithEmailAndPassword } from "firebase/auth";
+import { auth } from "@/lib/firebase";
 
 export async function POST(req: Request) {
-
   try {
     const { email, password } = await req.json();
 
@@ -31,6 +30,5 @@ export async function POST(req: Request) {
 }
 
 export async function GET(req: Request) {
-    return NextResponse.json({ message: '잘 되는뎅?' });
-  }
-  
+  return NextResponse.json({ message: "잘 되는뎅?" });
+}

@@ -3,25 +3,24 @@
 import { format } from "date-fns";
 import { useEffect, useState } from "react";
 import Calendar from "react-calendar";
-import { usePathname } from "next/navigation";
+import { useRouter } from "next/navigation";
 import "@/app/globals.css";
+import { SelectDateState } from "@/store/blogStore";
 
-interface CalendarBodyProps {
-  selectDate: Date;
-  setSelectDate: React.Dispatch<React.SetStateAction<Date>>;
+interface CalendarBodyProps extends SelectDateState {
   글있는날: Record<string, string[]>;
 }
 
-const CalendarBody: React.FC<CalendarBodyProps> = ({
+export function CalendarBody({
   selectDate,
   setSelectDate,
   글있는날,
-}) => {
+}: CalendarBodyProps) {
   const [boldDates, setBoldDates] = useState<Set<string>>(new Set());
   const [currentMonth, setCurrentMonth] = useState<number>(
     new Date().getMonth()
   );
-  const pathname = usePathname();
+  const router = useRouter();
 
   const fetchBoldDates = (month: number) => {
     const data = 글있는날;
@@ -56,6 +55,13 @@ const CalendarBody: React.FC<CalendarBodyProps> = ({
     }
   };
 
+  // 날짜 클릭 시 경로 이동
+  const handleDateClick = (date: Date) => {
+    setSelectDate(date);
+    const formattedDate = date.toISOString().split("T")[0];
+    router.push(`/blog?date=${formattedDate}`); // 선택한 날짜로 경로 설정
+  };
+
   return (
     <div>
       <Calendar
@@ -67,21 +73,14 @@ const CalendarBody: React.FC<CalendarBodyProps> = ({
         next2Label={null}
         prev2Label={null}
         value={selectDate}
-        onChange={(value) => setSelectDate(value as Date)}
+        onChange={(value) => {
+          setSelectDate(value as Date);
+          handleDateClick(value as Date); // 날짜 클릭 시 handleDateClick 호출
+        }}
         locale="ko"
         tileClassName={tileClassName}
         onActiveStartDateChange={handleActiveStartDateChange}
       />
-      <div className="mt-6 flex justify-center">
-        <button
-          onClick={() => setSelectDate(new Date())}
-          className="p-1 border border-gray-600"
-        >
-          Go Today
-        </button>
-      </div>
     </div>
   );
-};
-
-export default CalendarBody;
+}

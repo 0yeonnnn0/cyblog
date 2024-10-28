@@ -2,18 +2,17 @@
 
 import Image from "next/image";
 import logoImg from "@/public/logo_fire.gif";
-import { ReactNode, useEffect, useState } from "react";
+import { ReactNode } from "react";
 import NavigationLink from "@/components/NavigationLink";
-import { useRouter } from "next/router";
 import { usePathname } from "next/navigation";
 
 interface AuthLayoutProps {
   children: ReactNode;
 }
 
-function AuthLayout({ children }: AuthLayoutProps) {
+export default function AuthLayout({ children }: AuthLayoutProps) {
   const currentPath = usePathname();
-  const isLoginPage = currentPath === "/auth/login";
+  const isLoginPage: boolean = currentPath === "/auth/login";
 
   return (
     <div className="border border-transparent rounded-[10px] p-[5px]">
@@ -26,20 +25,28 @@ function AuthLayout({ children }: AuthLayoutProps) {
           unoptimized={true}
         />
         <div className="w-login-button m-[20px] mx-auto">{children}</div>
-        <div className="flex text-sm justify-center my-2 text-gray-500 gap-3">
-          <NavigationLink path="/auth/find/id" label="아이디 찾기" />
-          <p>|</p>
-          <NavigationLink path="/auth/find/pw" label="비밀번호 찾기" />
-          <p>|</p>
-          {isLoginPage ? (
-            <NavigationLink path="/auth/join" label="회원가입" />
-          ) : (
-            <NavigationLink path="/auth/login" label="로그인" />
-          )}
-        </div>
+        <BottomNav isLoginPage={isLoginPage} />
       </div>
     </div>
   );
 }
 
-export default AuthLayout;
+interface BottomNavProps {
+  isLoginPage: boolean;
+}
+
+function BottomNav({ isLoginPage }: BottomNavProps) {
+  return (
+    <div className="flex text-sm justify-center my-2 text-gray-500 gap-3">
+      <NavigationLink path="/auth/find/id" label="아이디 찾기" />
+      <p>|</p>
+      <NavigationLink path="/auth/find/pw" label="비밀번호 찾기" />
+      <p>|</p>
+      {isLoginPage ? (
+        <NavigationLink path="/auth/join" label="회원가입" />
+      ) : (
+        <NavigationLink path="/auth/login" label="로그인" />
+      )}
+    </div>
+  );
+}

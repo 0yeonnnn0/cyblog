@@ -3,9 +3,8 @@
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faRightToBracket } from "@fortawesome/free-solid-svg-icons";
 import LPTextForm from "./LPTextForm";
-import NavigationLink from "@/components/NavigationLink";
 
-const LoginPage: React.FC = () => {
+export default function LoginPage() {
   return (
     <div className="border-solid border border-gray-300 rounded-md">
       <div className="bg-gray-300 h-14">
@@ -17,6 +16,4 @@ const LoginPage: React.FC = () => {
       <LPTextForm />
     </div>
   );
-};
-
-export default LoginPage;
+}

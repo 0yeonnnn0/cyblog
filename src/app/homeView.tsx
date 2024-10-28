@@ -1,7 +1,22 @@
-"use client"; // Next.js 클라이언트 컴포넌트로 지정
 import { useRouter } from "next/navigation";
+interface HPViewsProps {
+  todayViews: number;
+  totalViews: number;
+}
 
-const HPBlogTitle: React.FC = () => {
+export function HPViews({ todayViews, totalViews }: HPViewsProps) {
+  return (
+    <p className="h-14 pt-9 text-xs text-center select-none">
+      <span>Today</span>
+      <span className="text-theme-color-blue">{todayViews}</span>
+      <span>
+        | Total <span className="text-theme-color-blue">{totalViews}</span>
+      </span>
+    </p>
+  );
+}
+
+export function HPBlogTitle() {
   const router = useRouter();
 
   return (
@@ -19,6 +34,4 @@ const HPBlogTitle: React.FC = () => {
       </span>
     </div>
   );
-};
-
-export default HPBlogTitle;
+}

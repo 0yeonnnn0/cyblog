@@ -48,6 +48,12 @@
       "@/context/*": [
         "src/app/context/*"
       ],
+      "@/store/*": [
+        "src/store/*"
+      ],
+      "@/model/*": [
+        "src/model/*"
+      ],
     }
   },
   "include": [
