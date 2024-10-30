@@ -59,7 +59,7 @@ export function CalendarBody({
   const handleDateClick = (date: Date) => {
     setSelectDate(date);
     const formattedDate = date.toISOString().split("T")[0];
-    router.push(`/blog?date=${formattedDate}`); // 선택한 날짜로 경로 설정
+    router.push(`/?post=${formattedDate}`); // 선택한 날짜로 경로 설정
   };
 
   return (

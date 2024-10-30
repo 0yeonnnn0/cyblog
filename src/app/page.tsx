@@ -1,7 +1,53 @@
-// 메인 페이지
-// 실제 페이지의 내용을 담당하는 파일입니다. 사용자가 특정 URL을 요청하면 해당 경로에 대응하는 page.tsx가 렌더링
-// app/page.tsx
+"use client";
 
-export default function Home() {
-  return <>홈페이지 개발중</>;
+import { TextEditor } from "@/components/TextEditor";
+import ReactMarkdown from "react-markdown";
+import rehypeRaw from "rehype-raw";
+import remarkGfm from "remark-gfm";
+import { useBlogController } from "./blog/blogController";
+import { BlogFooter, DateView } from "./blog/blogView";
+
+export default function BlogPage() {
+  const {
+    posts,
+    currentPost,
+    isEdited,
+    handleEdit,
+    handleSave,
+    handleContentChange,
+    handleDelete,
+    handleCancel,
+    handleLikey,
+  } = useBlogController();
+
+  return (
+    <div className="flex flex-col content-between min-h-full">
+      <DateView />
+
+      <div className="blog-content p-2 flex-1 h-full font-mono">
+        {isEdited ? (
+          <TextEditor
+            value={posts.content || ""}
+            setValue={handleContentChange}
+          />
+        ) : currentPost ? (
+          <ReactMarkdown
+            rehypePlugins={[rehypeRaw]}
+            remarkPlugins={[remarkGfm]}
+          >
+            {currentPost?.content}
+          </ReactMarkdown>
+        ) : (
+          <p>일기가 존재하지 않습니다.</p>
+        )}
+      </div>
+      <BlogFooter
+        handleLikey={handleLikey}
+        handleEdit={handleEdit}
+        handleCancel={handleCancel}
+        handleSave={handleSave}
+        handleDelete={handleDelete}
+      />
+    </div>
+  );
 }

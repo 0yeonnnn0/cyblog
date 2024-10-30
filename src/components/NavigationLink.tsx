@@ -5,7 +5,7 @@ interface NavigationLinkProps {
   label: string;
 }
 
-const NavigationLink: React.FC<NavigationLinkProps> = ({ path, label }) => {
+export default function NavigationLink({ path, label }: NavigationLinkProps) {
   const router = useRouter();
 
   return (
@@ -18,6 +18,4 @@ const NavigationLink: React.FC<NavigationLinkProps> = ({ path, label }) => {
       {label}
     </a>
   );
-};
-
-export default NavigationLink;
+}

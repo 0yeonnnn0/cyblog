@@ -14,10 +14,12 @@ import {
 } from "@fortawesome/free-brands-svg-icons";
 import { faSquarePen } from "@fortawesome/free-solid-svg-icons";
 import { IconProp } from "@fortawesome/fontawesome-svg-core";
+import { useUserStore } from "@/store/userStore";
 
 export function HPLeftSide() {
+  const user = useUserStore((state) => state.user);
   return (
-    <div className="flex justify-between flex-col gap-3 h-full pb-3 items-center ">
+    <div className="flex justify-between flex-col gap-3 h-full pb-3 items-center">
       <div>
         <Image
           src={profileImg}
@@ -29,17 +31,23 @@ export function HPLeftSide() {
         />
 
         <div className="w-40 h-32 text-pretty select-none">
-          제 일기장에 오신 것을 환영합니다. 🌱
+          {user && `${user?.username} 님, \n`}제 일기장에 오신 것을 환영합니다.
+          🌱
         </div>
       </div>
-      <div className="flex gap-5 font-black select-none">
-        <SocialIcon
-          url="https://www.instagram.com/___yeonnnn"
-          icon={faSquareInstagram}
-        />
-        <SocialIcon url="https://github.com/0yeonnnn0" icon={faSquareGithub} />
-        <SocialIcon url="https://lmsd1.tistory.com/" icon={faSquarePen} />
-      </div>
+      <SocialIcons />
+    </div>
+  );
+}
+export function SocialIcons() {
+  return (
+    <div className="flex gap-5 font-black select-none">
+      <SocialIcon
+        url="https://www.instagram.com/___yeonnnn"
+        icon={faSquareInstagram}
+      />
+      <SocialIcon url="https://github.com/0yeonnnn0" icon={faSquareGithub} />
+      <SocialIcon url="https://lmsd1.tistory.com/" icon={faSquarePen} />
     </div>
   );
 }
@@ -75,15 +83,18 @@ export function BPLeftside() {
   };
 
   return (
-    <div>
-      <CalendarBody
-        selectDate={selectDate}
-        setSelectDate={setSelectDate}
-        글있는날={글있는날}
-      />
-      <div className="mt-6 flex justify-center">
-        <BlogButton text="Go Today" onClick={() => handleButtonClick()} />
+    <div className="flex flex-col justify-between h-full pb-3 items-center">
+      <div>
+        <CalendarBody
+          selectDate={selectDate}
+          setSelectDate={setSelectDate}
+          글있는날={글있는날}
+        />
+        <div className="mt-6 flex justify-center">
+          <BlogButton variant="secondary" text="Go Today" onClick={() => handleButtonClick()} />
+        </div>
       </div>
+      <SocialIcons />
     </div>
   );
 }

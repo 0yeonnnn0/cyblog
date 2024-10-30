@@ -10,14 +10,14 @@ export interface IBlog extends Document {
   likey: number; // 좋아요 수
 }
 
-export const BlogSchema: Schema = new Schema(
-  {
-    content: { type: String, required: true },
-    author: { type: String, required: true },
-    views: { type: Number, default: 0 },
-    likey: { type: Number, default: 0 },
-  },
-  { timestamps: true } // 자동으로 createdAt, updatedAt을 관리합니다.
-);
+const BlogSchema = new Schema<IBlog>({
+  content: { type: String, required: true },
+  author: { type: String, required: true },
+  views: { type: Number, default: 0 },
+  createdAt: { type: Date, default: Date.now },
+  updatedAt: { type: Date, default: Date.now },
+  likey: { type: Number, default: 0 },
+});
 
-export default mongoose.model<IBlog>("Blog", BlogSchema);
+export default mongoose.models.Blog ||
+  mongoose.model<IBlog>("Blog", BlogSchema);

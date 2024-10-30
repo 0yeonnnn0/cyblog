@@ -4,7 +4,7 @@ import { HPPostIt } from "@/components/HPPostIt";
 import { ReactNode } from "react";
 import { usePathname } from "next/navigation";
 import { HPViews, HPBlogTitle } from "./homeView";
-import { BPLeftside, HPLeftSide } from "@/components/LeftSideView";
+import { BPLeftside, HPLeftSide, SocialIcons } from "@/components/LeftSideView";
 
 export default function RootLayout({ children }: { children: ReactNode }) {
   const pathname = usePathname();
@@ -18,7 +18,7 @@ export default function RootLayout({ children }: { children: ReactNode }) {
               <HPViews todayViews={10} totalViews={100} />
 
               <div className="bg-white border-solid border-gray-400 border-3 rounded-2xl h-content w-content-left m-content-left p-content-left">
-                {pathname === "/blog" ? <BPLeftside /> : <HPLeftSide />}
+                {pathname === "/" ? <BPLeftside /> : <HPLeftSide />}
               </div>
             </div>
           </div>

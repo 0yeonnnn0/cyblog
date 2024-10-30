@@ -1,4 +1,5 @@
 import { create } from "zustand";
+import { persist } from "zustand/middleware";
 
 export interface User {
   uid: string; // Firebase UID
@@ -19,8 +20,26 @@ const initialUser: User = {
 };
 
 //로그인 후 사용자 정보를 저장하는 상태
-export const useUserStore = create<UserState>((set) => ({
-  user: initialUser,
-  setUser: (user) => set({ user }),
-  resetUser: () => set({ user: null }), //로그아웃시 사용
-}));
+// ... existing code ...
+export const useUserStore = create<UserState>()(
+  persist(
+    (set) => ({
+      user: initialUser,
+      setUser: (user) => set({ user }),
+      resetUser: () => set({ user: null }),
+    }),
+    {
+      name: "user-storage",
+      storage: {
+        getItem: (name) => {
+          const str = localStorage.getItem(name);
+          return str ? JSON.parse(str) : null;
+        },
+        setItem: (name, value) => {
+          localStorage.setItem(name, JSON.stringify(value));
+        },
+        removeItem: (name) => localStorage.removeItem(name),
+      },
+    }
+  )
+);

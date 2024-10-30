@@ -43,8 +43,11 @@ export function HPPostIt() {
   const topButtons: Button[] = [
     { path: "/", label: "홈" },
     { path: "/profile", label: "프로필" },
-    { path: "/blog", label: "블로그" },
+    // { path: "/blog", label: "블로그" },
     { path: "/guestbook", label: "방명록" },
+    user
+      ? { path: "/auth/login", label: "LogOut", condition: true }
+      : { path: "/auth/login", label: "LogIn", condition: true },
   ];
 
   const bottomButtons: Button[] = [
@@ -60,11 +63,11 @@ export function HPPostIt() {
         getButtonClass={getButtonClass}
         handleLogout={handleLogout}
       />
-      <CombinedButtons
+      {/* <CombinedButtons
         buttons={bottomButtons}
         getButtonClass={getButtonClass}
         handleLogout={handleLogout}
-      />
+      /> */}
     </div>
   );
 }
