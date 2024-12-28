@@ -3,14 +3,25 @@
 import React, { useState } from "react";
 import { logInController } from "./loginController";
 import { useRouter } from "next/navigation";
+import { useUserStore } from "@/store/userStore";
 
 function LPTextForm() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const router = useRouter();
-  const handleLogIn = () => {
-    logInController.logIn({ email, password });
-    router.push("/");
+  const setUser = useUserStore((state) => state.setUser);
+
+  const handleLogIn = async () => {
+    try {
+      const user = await logInController.logIn({ email, password });
+      if (user) {
+        setUser(user); // Zustand store에 사용자 정보 저장
+        router.push("/");
+      }
+    } catch (error) {
+      console.error("로그인 실패:", error);
+      // 여기에 에러 처리 로직 추가 가능
+    }
   };
 
   return (

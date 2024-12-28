@@ -1,14 +1,14 @@
-"use client"; // Next.js 클라이언트 컴포넌트로 지정
+"use client";
 
-import { format, startOfDay, parse } from "date-fns";
+import { format } from "date-fns";
 import { useEffect, useState } from "react";
 import Calendar from "react-calendar";
 import { useRouter } from "next/navigation";
 import "@/app/globals.css";
 
 interface CalendarBodyProps {
-  selectDate: string;
-  setSelectDate: (date: string) => void;
+  selectDate: Date;
+  setSelectDate: (date: Date) => void;
   글있는날: Record<string, string[]>;
 }
 
@@ -58,9 +58,8 @@ export function CalendarBody({
 
   // 날짜 클릭 시 경로 이동
   const handleDateClick = (date: Date) => {
-    const formattedDate = format(date, "yyyy-MM-dd");
-    setSelectDate(formattedDate);
-    router.push(`/?post=${formattedDate}`);
+    setSelectDate(date);
+    router.push(`/?post=${date.toISOString().slice(0, 10)}`);
   };
 
   return (
@@ -73,11 +72,10 @@ export function CalendarBody({
         minDetail="year"
         next2Label={null}
         prev2Label={null}
-        value={parse(selectDate, "yyyy-MM-dd", new Date())}
+        value={selectDate}
         onChange={(value) => {
           const date = value as Date;
-          const formattedDate = format(date, "yyyy-MM-dd");
-          setSelectDate(formattedDate);
+          setSelectDate(date);
           handleDateClick(date);
         }}
         locale="ko"

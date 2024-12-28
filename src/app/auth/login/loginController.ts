@@ -16,6 +16,7 @@ export const logInController = {
       } else {
         showErrorAlert("Error : ", "Invalid email or password.");
       }
+      return userData;
     } catch (error) {
       showErrorAlert("Error", `Firebase authentication failed: ${error}`);
     }

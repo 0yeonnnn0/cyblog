@@ -24,7 +24,7 @@ const initialUser: User = {
 export const useUserStore = create<UserState>()(
   persist(
     (set) => ({
-      user: initialUser,
+      user: null,
       setUser: (user) => set({ user }),
       resetUser: () => set({ user: null }),
     }),

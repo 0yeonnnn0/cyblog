@@ -39,21 +39,19 @@ export function HPPostIt() {
     window.location.reload();
   };
 
-  // topButtons에 글쓰기 버튼 추가
   const topButtons: Button[] = [
     { path: "/", label: "홈" },
-    { path: "/profile", label: "프로필" },
-    // { path: "/blog", label: "블로그" },
-    { path: "/guestbook", label: "방명록" },
-    user
-      ? { path: "/auth/login", label: "LogOut", condition: true }
-      : { path: "/auth/login", label: "LogIn", condition: true },
-  ];
-
-  const bottomButtons: Button[] = [
-    user
-      ? { path: "/auth/login", label: "LogOut", condition: true }
-      : { path: "/auth/login", label: "LogIn", condition: true },
+    ...(user
+      ? [
+          { path: "/profile", label: "프로필" },
+          { path: "/guestbook", label: "방명록" },
+          { path: "/auth/login", label: "로그아웃", condition: true },
+        ]
+      : [
+          { path: "/profile", label: "프로필" },
+          { path: "/guestbook", label: "방명록" },
+          { path: "/auth/login", label: "로그인", condition: true },
+        ]),
   ];
 
   return (

@@ -35,11 +35,15 @@ export async function GET(req: Request) {
     // 월별 포스트 날짜 목록 조회
     if (month) {
       const startOfMonth = new Date(month + "-01");
-      const endOfMonth = new Date(
-        startOfMonth.getFullYear(),
-        startOfMonth.getMonth() + 1,
-        0
-      );
+      startOfMonth.setUTCHours(0, 0, 0, 0); // 월 시작일의 00:00:00
+
+      const endOfMonth = new Date(month + "-01");
+      endOfMonth.setMonth(endOfMonth.getMonth() + 1);
+      endOfMonth.setDate(endOfMonth.getDate() - 1); // 하루 전으로 설정
+      endOfMonth.setUTCHours(23, 59, 59, 999); // 월 마지막일의 23:59:59
+
+      console.log("startOfMonth:", startOfMonth);
+      console.log("endOfMonth:", endOfMonth);
 
       const posts = await Blog.find(
         {
@@ -49,7 +53,7 @@ export async function GET(req: Request) {
           },
         },
         "createdAt"
-      ); // createdAt 필드만 가져옴
+      );
 
       const dates = posts.map(
         (post) => post.createdAt.toISOString().split("T")[0]

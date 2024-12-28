@@ -1,14 +1,12 @@
-import {
-  useBlogStore,
-  useEditStatusStore,
-  useSelectDateStore,
-} from "@/store/blogStore";
+import { useBlogStore, useEditStatusStore } from "@/store/blogStore";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faHeart } from "@fortawesome/free-regular-svg-icons";
 import { useUserStore } from "@/store/userStore";
+import { useCalendarStore } from "@/store/calendarStore";
 
 export function DateView() {
-  const selectDate = useSelectDateStore((state) => state.selectDate);
+  const { selectDate } = useCalendarStore();
+
   return (
     <time className="block mb-3 text-gray-600 font-medium">
       {selectDate?.getFullYear()}년 {selectDate?.getMonth() + 1}월{" "}
@@ -16,6 +14,7 @@ export function DateView() {
     </time>
   );
 }
+
 interface BlogFooterProps {
   handleLikey: () => void;
   handleEdit: () => void;

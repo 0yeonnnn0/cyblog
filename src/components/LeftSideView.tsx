@@ -2,11 +2,10 @@
 
 import { BlogButton } from "@/app/blog/blogView";
 import { CalendarBody } from "./Calendar";
-import { useSelectDateStore } from "@/store/blogStore";
-import { useRouter } from "next/navigation";
 import Image from "next/image";
 import profileImg from "@/public/profile.png";
 
+import { useCalendarStore } from "@/store/calendarStore";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
   faSquareGithub,
@@ -16,6 +15,8 @@ import { faSquarePen } from "@fortawesome/free-solid-svg-icons";
 import { IconProp } from "@fortawesome/fontawesome-svg-core";
 import { useUserStore } from "@/store/userStore";
 import { useEffect, useState } from "react";
+import { useRouter } from "next/navigation";
+import { useBlogStore } from "@/store/blogStore";
 
 export function HPLeftSide() {
   const user = useUserStore((state) => state.user);
@@ -68,15 +69,29 @@ function SocialIcon({ url, icon, size = "2x" }: SocialIconProps) {
 }
 
 export function BPLeftside() {
-  const [글있는날, set글있는날] = useState<Record<string, string[]>>({});
+  const { postDates, currentMonth, selectDate, setSelectDate, setPostDates } =
+    useCalendarStore();
+  const { setCurrentPost, clearCurrentPost } = useBlogStore();
   const [isLoading, setIsLoading] = useState(true);
-  const [currentMonth, setCurrentMonth] = useState(
-    new Date().toISOString().slice(0, 7)
-  );
-  const [selectDate, setSelectDate] = useState(
-    new Date().toISOString().slice(0, 10)
-  );
 
+  // 특정 날짜 포스트 조회
+  useEffect(() => {
+    if (selectDate) {
+      clearCurrentPost();
+      const fetchPost = async () => {
+        const response = await fetch(
+          `/api/blog?post=${selectDate.toISOString().slice(0, 10)}`
+        );
+        const data = await response.json();
+        if (response.ok) {
+          setCurrentPost(data);
+        }
+      };
+      fetchPost();
+    }
+  }, [selectDate]);
+
+  // 월별 포스트 목록 조회
   useEffect(() => {
     const fetchPostDates = async () => {
       setIsLoading(true);
@@ -84,10 +99,7 @@ export function BPLeftside() {
         const response = await fetch(`/api/blog?month=${currentMonth}`);
         const data = await response.json();
         if (response.ok) {
-          set글있는날((prevDates) => ({
-            ...prevDates,
-            [currentMonth]: data.dates,
-          }));
+          setPostDates(currentMonth, data.dates);
         }
       } catch (error) {
         console.error("날짜 데이터를 가져오는데 실패했습니다:", error);
@@ -96,7 +108,7 @@ export function BPLeftside() {
     };
 
     fetchPostDates();
-  }, [currentMonth]);
+  }, [currentMonth, setPostDates]);
 
   return (
     <div className="flex flex-col justify-between h-full pb-3 items-center">
@@ -104,13 +116,13 @@ export function BPLeftside() {
         <CalendarBody
           selectDate={selectDate}
           setSelectDate={setSelectDate}
-          글있는날={글있는날}
+          글있는날={postDates}
         />
         <div className="mt-6 flex justify-center">
           <BlogButton
             variant="secondary"
             text="Go Today"
-            onClick={() => setSelectDate(new Date().toISOString().slice(0, 10))}
+            onClick={() => setSelectDate(new Date())}
           />
         </div>
       </div>
