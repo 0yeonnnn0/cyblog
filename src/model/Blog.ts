@@ -4,9 +4,10 @@ export interface IBlog extends Document {
   content: string; // 게시물 내용
   author: string; // 작성자
   views: number; // 조회수
-  createdAt: Date; // 작성일
-  updatedAt: Date; // 수정일
+  createdAt: Date; // 작성일(UTC)
+  updatedAt: Date; // 수정일(UTC)
   likey: number; // 좋아요 수
+  postDay: string; // 작성일(UTC)
 }
 
 const BlogSchema = new Schema<IBlog>({
@@ -16,6 +17,7 @@ const BlogSchema = new Schema<IBlog>({
   createdAt: { type: Date, default: Date.now },
   updatedAt: { type: Date, default: Date.now },
   likey: { type: Number, default: 0 },
+  postDay: { type: String, required: true },
 });
 
 export default mongoose.models.Blog ||

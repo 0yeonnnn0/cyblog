@@ -18,14 +18,20 @@ export async function getBlogPost(date: string) {
   }
 }
 
-export async function createBlogPost(data: Partial<IBlog>): Promise<IBlog> {
+export async function createBlogPost(
+  data: Partial<IBlog>,
+  localDate: string
+): Promise<IBlog> {
   try {
     const postBlogData = await fetch("/api/blog", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
       },
-      body: JSON.stringify(data),
+      body: JSON.stringify({
+        ...data,
+        date: localDate,
+      }),
     });
 
     if (!postBlogData.ok) {
@@ -41,7 +47,7 @@ export async function createBlogPost(data: Partial<IBlog>): Promise<IBlog> {
 
 export async function deleteBlogPost(date: string) {
   try {
-    const response = await fetch(`/api/blog?post=${date}`, {
+    const response = await fetch(`/api/blog?date=${date}`, {
       method: "DELETE",
     });
 

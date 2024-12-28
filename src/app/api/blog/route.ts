@@ -24,6 +24,7 @@ const getBlogByDateRange = async (date: string) => {
 };
 
 // GET: 특정 날짜의 블로그 게시물 조회 및 월별 포스트 날짜 목록 조회
+// GET: 특정 날짜의 블로그 게시물 조회 및 월별 포스트 날짜 목록 조회
 export async function GET(req: Request) {
   try {
     await connectDB();
@@ -34,37 +35,26 @@ export async function GET(req: Request) {
 
     // 월별 포스트 날짜 목록 조회
     if (month) {
-      const startOfMonth = new Date(month + "-01");
-      startOfMonth.setUTCHours(0, 0, 0, 0); // 월 시작일의 00:00:00
-
-      const endOfMonth = new Date(month + "-01");
-      endOfMonth.setMonth(endOfMonth.getMonth() + 1);
-      endOfMonth.setDate(endOfMonth.getDate() - 1); // 하루 전으로 설정
-      endOfMonth.setUTCHours(23, 59, 59, 999); // 월 마지막일의 23:59:59
-
-      console.log("startOfMonth:", startOfMonth);
-      console.log("endOfMonth:", endOfMonth);
+      const [year, monthStr] = month.split("-");
+      const nextMonth = String(Number(monthStr) + 1).padStart(2, "0");
 
       const posts = await Blog.find(
         {
-          createdAt: {
-            $gte: startOfMonth,
-            $lte: endOfMonth,
+          postDay: {
+            $gte: `${year}-${monthStr}-01`,
+            $lt: `${year}-${nextMonth}-01`,
           },
         },
-        "createdAt"
+        "postDay"
       );
 
-      const dates = posts.map(
-        (post) => post.createdAt.toISOString().split("T")[0]
-      );
-
+      const dates = posts.map((post) => post.postDay);
       return NextResponse.json({ dates });
     }
 
     // 특정 날짜의 포스트 조회
     if (postDate) {
-      const blog = await getBlogByDateRange(postDate);
+      const blog = await Blog.findOne({ postDay: postDate });
       if (!blog) {
         return NextResponse.json(
           { message: "No blog post found for the specified date" },
@@ -87,26 +77,82 @@ export async function GET(req: Request) {
 export async function POST(req: Request) {
   try {
     await connectDB();
-
     const { date, ...otherFields } = await req.json();
-    validateDate(date);
 
-    const { startOfDay, endOfDay } = getDayRange(date);
-    const blog = await Blog.findOneAndUpdate(
-      { createdAt: { $gte: startOfDay, $lt: endOfDay } },
-      { ...otherFields },
-      { new: true, upsert: true }
-    );
+    // 날짜 유효성 검사
+    if (!date || !date.match(/^\d{4}-\d{2}-\d{2}$/)) {
+      return NextResponse.json(
+        { message: "Invalid date format. Use YYYY-MM-DD" },
+        { status: 400 }
+      );
+    }
 
-    return NextResponse.json(blog, { status: 200 });
+    const blogData = {
+      ...otherFields,
+      postDay: date,
+    };
+
+    // 기존 게시물 확인
+    const existingPost = await Blog.findOne({ postDay: date });
+
+    const blog = await Blog.findOneAndUpdate({ postDay: date }, blogData, {
+      new: true,
+      upsert: true,
+    });
+
+    // 새로운 게시물 생성인지 업데이트인지에 따라 다른 상태 코드 반환
+    return NextResponse.json(blog, {
+      status: existingPost ? 200 : 201,
+    });
   } catch (error: any) {
+    console.error("Error creating blog post:", error);
     return NextResponse.json(
-      { message: error.message || "Failed to create or update blog post" },
+      {
+        message: "블로그 게시물 생성/수정 실패",
+        error: error.message,
+      },
       { status: 400 }
     );
   }
 }
 
+// PUT: 기존 블로그 게시물 수정
+export async function PUT(req: Request) {
+  try {
+    await connectDB();
+    const { date, ...data } = await req.json();
+    console.log("date", date);
+    console.log("data", data);
+
+    // 날짜 유효성 검사
+    if (!date || !date.match(/^\d{4}-\d{2}-\d{2}$/)) {
+      return NextResponse.json(
+        { message: "Invalid date format. Use YYYY-MM-DD" },
+        { status: 400 }
+      );
+    }
+
+    const blog = await Blog.findOneAndUpdate(
+      { postDay: date },
+      { ...data },
+      { new: true }
+    );
+
+    if (!blog) {
+      return NextResponse.json(
+        { message: "Blog post not found" },
+        { status: 404 }
+      );
+    }
+
+    return NextResponse.json(blog);
+  } catch (error: any) {
+    return NextResponse.json(
+      { message: "블로그 게시물 수정 실패", error: error.message },
+      { status: 400 }
+    );
+  }
+}
 // DELETE: 특정 블로그 게시물 삭제
 export async function DELETE(req: Request) {
   try {

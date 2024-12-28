@@ -15,7 +15,6 @@ import { faSquarePen } from "@fortawesome/free-solid-svg-icons";
 import { IconProp } from "@fortawesome/fontawesome-svg-core";
 import { useUserStore } from "@/store/userStore";
 import { useEffect, useState } from "react";
-import { useRouter } from "next/navigation";
 import { useBlogStore } from "@/store/blogStore";
 
 export function HPLeftSide() {
@@ -69,13 +68,13 @@ function SocialIcon({ url, icon, size = "2x" }: SocialIconProps) {
 }
 
 export function BPLeftside() {
-  const { postDates, currentMonth, selectDate, setSelectDate, setPostDates } =
-    useCalendarStore();
+  const { selectDate, setSelectDate } = useCalendarStore();
   const { setCurrentPost, clearCurrentPost } = useBlogStore();
   const [isLoading, setIsLoading] = useState(true);
 
   // 특정 날짜 포스트 조회
   useEffect(() => {
+    setIsLoading(true);
     if (selectDate) {
       clearCurrentPost();
       const fetchPost = async () => {
@@ -85,39 +84,19 @@ export function BPLeftside() {
         const data = await response.json();
         if (response.ok) {
           setCurrentPost(data);
+        } else {
+          clearCurrentPost();
         }
       };
       fetchPost();
     }
+    setIsLoading(false);
   }, [selectDate]);
-
-  // 월별 포스트 목록 조회
-  useEffect(() => {
-    const fetchPostDates = async () => {
-      setIsLoading(true);
-      try {
-        const response = await fetch(`/api/blog?month=${currentMonth}`);
-        const data = await response.json();
-        if (response.ok) {
-          setPostDates(currentMonth, data.dates);
-        }
-      } catch (error) {
-        console.error("날짜 데이터를 가져오는데 실패했습니다:", error);
-      }
-      setIsLoading(false);
-    };
-
-    fetchPostDates();
-  }, [currentMonth, setPostDates]);
 
   return (
     <div className="flex flex-col justify-between h-full pb-3 items-center">
       <div>
-        <CalendarBody
-          selectDate={selectDate}
-          setSelectDate={setSelectDate}
-          글있는날={postDates}
-        />
+        <CalendarBody selectDate={selectDate} setSelectDate={setSelectDate} />
         <div className="mt-6 flex justify-center">
           <BlogButton
             variant="secondary"

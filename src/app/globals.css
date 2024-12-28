@@ -389,7 +389,6 @@ react-calendar__month-view__weekdays {
 .react-calendar__month-view__weekdays__weekday {
   font-size: 14px;
   font-weight: bold;
-  margin-bottom: 10px;
   padding: 0.5em;
 }
 
@@ -407,6 +406,17 @@ react-calendar__month-view__weekdays {
   color: gray;
 }
 
+/* 캘린더 타일의 높이 조절 */
+.react-calendar__month-view__days__day {
+  height: 28px !important; /* 원하는 높이로 조절 */
+  padding: 10px 0 !important; /* 상하 패딩 추가 */
+}
+
+/* 주간 행 간격 조절 */
+.react-calendar__month-view__days {
+  row-gap: 5px !important; /* 행 간격 추가 */
+}
+
 /* 오늘 날짜 */
 .react-calendar__tile--now {
   background: none;
@@ -415,7 +425,7 @@ react-calendar__month-view__weekdays {
 .react-calendar__tile--active {
   background: none;
   color: gray;
-  box-shadow: 0 0 0 1px #2a9fc2 inset;
+  /* box-shadow: 0 0 0 1px #2a9fc2 inset; */
   border-radius: 100%;
 }
 
@@ -489,7 +499,7 @@ react-calendar__month-view__weekdays {
 /* profile.css */
 
 .profile-container {
-  @apply grid gap-[23px] pr-[10px] ;
+  @apply grid gap-[23px] pr-[10px];
   grid-template-columns: 1fr 2fr;
 }
 
@@ -500,4 +510,3 @@ react-calendar__month-view__weekdays {
 .profile-note {
   grid-column: 1 / span 2;
 }
-

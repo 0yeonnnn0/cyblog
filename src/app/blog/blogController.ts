@@ -1,9 +1,5 @@
 import { useState, useEffect } from "react";
-import {
-  useBlogStore,
-  useEditStatusStore,
-  useSelectDateStore,
-} from "@/store/blogStore";
+import { useBlogStore, useEditStatusStore } from "@/store/blogStore";
 import {
   createBlogPost,
   deleteBlogPost,
@@ -12,6 +8,7 @@ import {
 } from "./blogModel";
 import { useUserStore } from "@/store/userStore";
 import { useSearchParams } from "next/navigation";
+import { useCalendarStore } from "@/store/calendarStore";
 
 export function useBlogController() {
   const [posts, setPosts] = useState({ content: "", author: "" });
@@ -23,7 +20,7 @@ export function useBlogController() {
   const isEdited = useEditStatusStore((state) => state.isEdited);
   const setIsEdited = useEditStatusStore((state) => state.setIsEdited);
 
-  const selectedDate = useSelectDateStore((state) => state.selectDate);
+  const selectedDate = useCalendarStore((state) => state.selectDate);
 
   const clearCurrentPost = useBlogStore((state) => state.clearCurrentPost);
   const currentPost = useBlogStore((state) => state.currentPost);
@@ -45,22 +42,29 @@ export function useBlogController() {
     }));
   };
 
-  const handleSave = () => {
-    const newBlogData = {
-      date: date || new Date().toISOString().split("T")[0],
+  const handleSave = async () => {
+    const selectedDateStr = selectedDate.toISOString().split("T")[0];
+
+    const blogData = {
       author: user?.username || "Guest",
       content: posts.content,
     };
 
-    createBlogPost(newBlogData)
-      .then((savedBlog) => {
-        console.log("Blog post created successfully:", savedBlog);
-      })
-      .catch((error) => {
-        console.error("Error creating blog post:", error);
-      });
-    setIsEdited(false);
-    window.location.reload();
+    console.log("selectedDateStr", selectedDateStr);
+
+    try {
+      await createBlogPost(
+        {
+          ...blogData,
+        },
+        selectedDateStr
+      );
+
+      setIsEdited(false);
+      window.location.reload();
+    } catch (error) {
+      console.error("Error saving blog post:", error);
+    }
   };
 
   const handleDelete = async () => {

@@ -5,41 +5,47 @@ import { useEffect, useState } from "react";
 import Calendar from "react-calendar";
 import { useRouter } from "next/navigation";
 import "@/app/globals.css";
+import { useCalendarStore } from "@/store/calendarStore";
 
 interface CalendarBodyProps {
   selectDate: Date;
   setSelectDate: (date: Date) => void;
-  글있는날: Record<string, string[]>;
 }
 
-export function CalendarBody({
-  selectDate,
-  setSelectDate,
-  글있는날,
-}: CalendarBodyProps) {
-  const [boldDates, setBoldDates] = useState<Set<string>>(new Set());
-  const [currentMonth, setCurrentMonth] = useState<number>(
-    new Date().getMonth()
-  );
+export function CalendarBody({ selectDate, setSelectDate }: CalendarBodyProps) {
+  const { currentMonth, setCurrentMonth, currentYear, setCurrentYear } =
+    useCalendarStore();
   const router = useRouter();
-
-  const fetchBoldDates = (month: number) => {
-    const data = 글있는날;
-    return new Set(data[`2024-${String(month + 1).padStart(2, "0")}`] || []);
-  };
-
+  const [postDates, setPostDates] = useState<string[]>([]);
+  // 월별 포스트 목록 조회
   useEffect(() => {
-    const loadDates = () => {
-      const dates = fetchBoldDates(currentMonth);
-      setBoldDates(dates);
+    const fetchPostDates = async () => {
+      try {
+        const response = await fetch(
+          `/api/blog?month=${currentYear}-${String(currentMonth + 1).padStart(
+            2,
+            "0"
+          )}`
+        );
+        const data = await response.json();
+        setPostDates(data.dates);
+      } catch (error) {
+        console.error("날짜 데이터를 가져오는데 실패했습니다:", error);
+      }
     };
-    loadDates();
-  }, [currentMonth]);
+
+    fetchPostDates();
+  }, [currentMonth, setPostDates]);
 
   const tileClassName = ({ date, view }: { date: Date; view: string }) => {
     if (view === "month") {
-      const dateString = format(date, "yyyy-MM-dd");
-      if (boldDates.has(dateString)) {
+      // date를 로컬 시간 기준 YYYY-MM-DD 형식으로 변환
+      const year = date.getFullYear();
+      const month = String(date.getMonth() + 1).padStart(2, "0");
+      const day = String(date.getDate()).padStart(2, "0");
+      const formattedDate = `${year}-${month}-${day}`;
+
+      if (postDates?.includes(formattedDate)) {
         return "bold-date";
       }
     }
@@ -52,6 +58,7 @@ export function CalendarBody({
     activeStartDate: Date | null;
   }) => {
     if (activeStartDate) {
+      setCurrentYear(activeStartDate.getFullYear());
       setCurrentMonth(activeStartDate.getMonth());
     }
   };

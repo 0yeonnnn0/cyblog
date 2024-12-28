@@ -2,16 +2,19 @@ import { create } from "zustand";
 
 interface CalendarState {
   postDates: Record<string, string[]>;
-  currentMonth: string;
+  currentYear: number;
+  currentMonth: number;
   selectDate: Date;
-  setCurrentMonth: (month: string) => void;
+  setCurrentMonth: (month: number) => void;
   setSelectDate: (date: Date) => void;
   setPostDates: (month: string, dates: string[]) => void;
+  setCurrentYear: (year: number) => void;
 }
 
 export const useCalendarStore = create<CalendarState>((set) => ({
   postDates: {},
-  currentMonth: new Date().toISOString().slice(0, 7),
+  currentYear: new Date().getFullYear(),
+  currentMonth: new Date().getMonth(),
   selectDate: new Date(),
   setCurrentMonth: (month) => set({ currentMonth: month }),
   setSelectDate: (date) => set({ selectDate: date }),
@@ -19,4 +22,5 @@ export const useCalendarStore = create<CalendarState>((set) => ({
     set((state) => ({
       postDates: { ...state.postDates, [month]: dates },
     })),
+  setCurrentYear: (year) => set({ currentYear: year }),
 }));
