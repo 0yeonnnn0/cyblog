@@ -1,13 +1,14 @@
 "use client"; // Next.js 클라이언트 컴포넌트로 지정
 
-import { format } from "date-fns";
+import { format, startOfDay, parse } from "date-fns";
 import { useEffect, useState } from "react";
 import Calendar from "react-calendar";
 import { useRouter } from "next/navigation";
 import "@/app/globals.css";
-import { SelectDateState } from "@/store/blogStore";
 
-interface CalendarBodyProps extends SelectDateState {
+interface CalendarBodyProps {
+  selectDate: string;
+  setSelectDate: (date: string) => void;
   글있는날: Record<string, string[]>;
 }
 
@@ -37,7 +38,7 @@ export function CalendarBody({
 
   const tileClassName = ({ date, view }: { date: Date; view: string }) => {
     if (view === "month") {
-      const dateString = date.toISOString().split("T")[0];
+      const dateString = format(date, "yyyy-MM-dd");
       if (boldDates.has(dateString)) {
         return "bold-date";
       }
@@ -57,9 +58,9 @@ export function CalendarBody({
 
   // 날짜 클릭 시 경로 이동
   const handleDateClick = (date: Date) => {
-    setSelectDate(date);
-    const formattedDate = date.toISOString().split("T")[0];
-    router.push(`/?post=${formattedDate}`); // 선택한 날짜로 경로 설정
+    const formattedDate = format(date, "yyyy-MM-dd");
+    setSelectDate(formattedDate);
+    router.push(`/?post=${formattedDate}`);
   };
 
   return (
@@ -72,10 +73,12 @@ export function CalendarBody({
         minDetail="year"
         next2Label={null}
         prev2Label={null}
-        value={selectDate}
+        value={parse(selectDate, "yyyy-MM-dd", new Date())}
         onChange={(value) => {
-          setSelectDate(value as Date);
-          handleDateClick(value as Date); // 날짜 클릭 시 handleDateClick 호출
+          const date = value as Date;
+          const formattedDate = format(date, "yyyy-MM-dd");
+          setSelectDate(formattedDate);
+          handleDateClick(date);
         }}
         locale="ko"
         tileClassName={tileClassName}

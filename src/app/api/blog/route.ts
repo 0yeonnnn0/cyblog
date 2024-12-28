@@ -22,17 +22,55 @@ const getBlogByDateRange = async (date: string) => {
     createdAt: { $gte: startOfDay, $lt: endOfDay },
   });
 };
-// MongoDB와 연결합니다.
-connectDB();
 
-// GET: 모든 블로그 게시물 조회
+// GET: 특정 날짜의 블로그 게시물 조회 및 월별 포스트 날짜 목록 조회
 export async function GET(req: Request) {
   try {
-    const date = validateDate(new URL(req.url).searchParams.get("post"));
-    const blog = await getBlogByDateRange(date);
+    await connectDB();
 
-    if (!blog) throw new Error("No blog post found for the specified date");
-    return NextResponse.json(blog);
+    const url = new URL(req.url);
+    const postDate = url.searchParams.get("post");
+    const month = url.searchParams.get("month");
+
+    // 월별 포스트 날짜 목록 조회
+    if (month) {
+      const startOfMonth = new Date(month + "-01");
+      const endOfMonth = new Date(
+        startOfMonth.getFullYear(),
+        startOfMonth.getMonth() + 1,
+        0
+      );
+
+      const posts = await Blog.find(
+        {
+          createdAt: {
+            $gte: startOfMonth,
+            $lte: endOfMonth,
+          },
+        },
+        "createdAt"
+      ); // createdAt 필드만 가져옴
+
+      const dates = posts.map(
+        (post) => post.createdAt.toISOString().split("T")[0]
+      );
+
+      return NextResponse.json({ dates });
+    }
+
+    // 특정 날짜의 포스트 조회
+    if (postDate) {
+      const blog = await getBlogByDateRange(postDate);
+      if (!blog) {
+        return NextResponse.json(
+          { message: "No blog post found for the specified date" },
+          { status: 404 }
+        );
+      }
+      return NextResponse.json(blog);
+    }
+
+    throw new Error("Either 'post' or 'month' parameter is required");
   } catch (error: any) {
     return NextResponse.json(
       { message: error.message },
@@ -44,6 +82,8 @@ export async function GET(req: Request) {
 // POST: 새로운 블로그 게시물 생성
 export async function POST(req: Request) {
   try {
+    await connectDB();
+
     const { date, ...otherFields } = await req.json();
     validateDate(date);
 
@@ -66,6 +106,8 @@ export async function POST(req: Request) {
 // DELETE: 특정 블로그 게시물 삭제
 export async function DELETE(req: Request) {
   try {
+    await connectDB();
+
     const date = validateDate(new URL(req.url).searchParams.get("date"));
     const { startOfDay, endOfDay } = getDayRange(date);
 

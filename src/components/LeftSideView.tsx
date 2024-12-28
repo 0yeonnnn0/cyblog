@@ -15,6 +15,7 @@ import {
 import { faSquarePen } from "@fortawesome/free-solid-svg-icons";
 import { IconProp } from "@fortawesome/fontawesome-svg-core";
 import { useUserStore } from "@/store/userStore";
+import { useEffect, useState } from "react";
 
 export function HPLeftSide() {
   const user = useUserStore((state) => state.user);
@@ -67,20 +68,35 @@ function SocialIcon({ url, icon, size = "2x" }: SocialIconProps) {
 }
 
 export function BPLeftside() {
-  const 글있는날: Record<string, string[]> = {
-    "2024-07": ["2024-07-10", "2024-07-15"],
-    "2024-08": ["2024-08-01", "2024-08-10", "2024-08-20"],
-  };
-  const selectDate = useSelectDateStore((state) => state.selectDate);
-  const setSelectDate = useSelectDateStore((state) => state.setSelectDate);
-  const router = useRouter();
+  const [글있는날, set글있는날] = useState<Record<string, string[]>>({});
+  const [isLoading, setIsLoading] = useState(true);
+  const [currentMonth, setCurrentMonth] = useState(
+    new Date().toISOString().slice(0, 7)
+  );
+  const [selectDate, setSelectDate] = useState(
+    new Date().toISOString().slice(0, 10)
+  );
 
-  const handleButtonClick = () => {
-    const today = new Date();
-    setSelectDate(today);
-    const formattedDate = today.toISOString().split("T")[0];
-    router.push(`/?post=${formattedDate}`);
-  };
+  useEffect(() => {
+    const fetchPostDates = async () => {
+      setIsLoading(true);
+      try {
+        const response = await fetch(`/api/blog?month=${currentMonth}`);
+        const data = await response.json();
+        if (response.ok) {
+          set글있는날((prevDates) => ({
+            ...prevDates,
+            [currentMonth]: data.dates,
+          }));
+        }
+      } catch (error) {
+        console.error("날짜 데이터를 가져오는데 실패했습니다:", error);
+      }
+      setIsLoading(false);
+    };
+
+    fetchPostDates();
+  }, [currentMonth]);
 
   return (
     <div className="flex flex-col justify-between h-full pb-3 items-center">
@@ -94,7 +110,7 @@ export function BPLeftside() {
           <BlogButton
             variant="secondary"
             text="Go Today"
-            onClick={() => handleButtonClick()}
+            onClick={() => setSelectDate(new Date().toISOString().slice(0, 10))}
           />
         </div>
       </div>
