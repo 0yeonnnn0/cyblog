@@ -79,7 +79,7 @@ export function BPLeftside() {
     const today = new Date();
     setSelectDate(today);
     const formattedDate = today.toISOString().split("T")[0];
-    router.push(`/blog?date=${formattedDate}`);
+    router.push(`/?post=${formattedDate}`);
   };
 
   return (
@@ -91,7 +91,11 @@ export function BPLeftside() {
           글있는날={글있는날}
         />
         <div className="mt-6 flex justify-center">
-          <BlogButton variant="secondary" text="Go Today" onClick={() => handleButtonClick()} />
+          <BlogButton
+            variant="secondary"
+            text="Go Today"
+            onClick={() => handleButtonClick()}
+          />
         </div>
       </div>
       <SocialIcons />
