@@ -29,7 +29,7 @@ export function BlogFooter({
       <div className="flex items-center">
         {currentPost && (
           <LikeButton
-            count={currentPost.likey}
+            count={currentPost.likey || 0}
             onLike={() => handleLikey(currentPost._id as string)}
           />
         )}
