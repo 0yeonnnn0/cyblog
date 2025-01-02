@@ -25,7 +25,11 @@ export const useVisitorStore = create<VisitorState>((set) => ({
       const { count } = await getVisitorCount();
       set({ count, isLoading: false });
     } catch (error) {
-      set({ error: "방문자 수 조회 실패", isLoading: false });
+      const errorMessage =
+        error instanceof Error
+          ? error.message
+          : "알 수 없는 오류가 발생했습니다";
+      set({ error: errorMessage, isLoading: false });
     }
   },
 
@@ -49,7 +53,11 @@ export const useVisitorStore = create<VisitorState>((set) => ({
         set({ count });
       }
     } catch (error) {
-      set({ error: "방문자 수 업데이트 실패", isLoading: false });
+      const errorMessage =
+        error instanceof Error
+          ? error.message
+          : "알 수 없는 오류가 발생했습니다";
+      set({ error: errorMessage, isLoading: false });
     }
   },
 }));

@@ -4,7 +4,7 @@ interface TodayStore {
   today: string;
 }
 
-export const useTodayStore = create<TodayStore>((set) => ({
+export const useTodayStore = create<TodayStore>(() => ({
   today: new Date().toLocaleDateString("en-CA", {
     year: "numeric",
     month: "2-digit",

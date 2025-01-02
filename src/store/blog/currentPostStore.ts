@@ -1,9 +1,15 @@
 import { create } from "zustand";
-import { IBlog } from "@/model/Blog";
+
+export interface CurrentPost {
+  content: string;
+  author: string;
+  likey: number;
+  _id?: string;
+}
 
 interface CurrentPostStore {
-  currentPost: IBlog | null;
-  setCurrentPost: (post: IBlog) => void;
+  currentPost: CurrentPost | null;
+  setCurrentPost: (post: CurrentPost) => void;
   clearCurrentPost: () => void;
 }
 

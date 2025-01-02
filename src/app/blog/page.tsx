@@ -5,6 +5,7 @@ import { DateView } from "../../features/blog/components/DateView";
 import { BlogFooter } from "../../features/blog/components/BlogFooter";
 import BlogContent from "../../features/blog/components/BlogContent";
 import { useBlogController } from "@/features/blog/controllers/blogController";
+
 export default function BlogPage() {
   const {
     posts,
@@ -24,7 +25,6 @@ export default function BlogPage() {
       <DateView />
       <BlogContent
         isEdited={isEdited}
-        // @ts-ignore, 추후 post의 타입 수정
         posts={posts}
         currentPost={currentPost}
         handleContentChange={handleContentChange}

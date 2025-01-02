@@ -24,11 +24,9 @@ export async function POST(req: Request) {
       { message: "User created successfully", user },
       { status: 201 }
     );
-  } catch (error: any) {
-    return NextResponse.json({ error: error.message }, { status: 400 });
+  } catch (error) {
+    const errorMessage =
+      error instanceof Error ? error.message : "알 수 없는 오류가 발생했습니다";
+    return NextResponse.json({ error: errorMessage }, { status: 400 });
   }
-}
-
-export async function GET(req: Request) {
-  return NextResponse.json({ message: "잘 되는뎅?" });
 }

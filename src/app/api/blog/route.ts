@@ -16,14 +16,6 @@ const validateDate = (date: string | null) => {
   return date;
 };
 
-const getBlogByDateRange = async (date: string) => {
-  const { startOfDay, endOfDay } = getDayRange(date);
-  return await Blog.findOne({
-    createdAt: { $gte: startOfDay, $lt: endOfDay },
-  });
-};
-
-// GET: 특정 날짜의 블로그 게시물 조회 및 월별 포스트 날짜 목록 조회
 // GET: 특정 날짜의 블로그 게시물 조회 및 월별 포스트 날짜 목록 조회
 export async function GET(req: Request) {
   try {
@@ -65,11 +57,10 @@ export async function GET(req: Request) {
     }
 
     throw new Error("Either 'post' or 'month' parameter is required");
-  } catch (error: any) {
-    return NextResponse.json(
-      { message: error.message },
-      { status: error.message.includes("required") ? 400 : 404 }
-    );
+  } catch (error) {
+    const errorMessage =
+      error instanceof Error ? error.message : "알 수 없는 오류가 발생했습니다";
+    return NextResponse.json({ error: errorMessage }, { status: 400 });
   }
 }
 
@@ -104,15 +95,10 @@ export async function POST(req: Request) {
     return NextResponse.json(blog, {
       status: existingPost ? 200 : 201,
     });
-  } catch (error: any) {
-    console.error("Error creating blog post:", error);
-    return NextResponse.json(
-      {
-        message: "블로그 게시물 생성/수정 실패",
-        error: error.message,
-      },
-      { status: 400 }
-    );
+  } catch (error) {
+    const errorMessage =
+      error instanceof Error ? error.message : "알 수 없는 오류가 발생했습니다";
+    return NextResponse.json({ error: errorMessage }, { status: 400 });
   }
 }
 
@@ -146,11 +132,10 @@ export async function PUT(req: Request) {
     }
 
     return NextResponse.json(blog);
-  } catch (error: any) {
-    return NextResponse.json(
-      { message: "블로그 게시물 수정 실패", error: error.message },
-      { status: 400 }
-    );
+  } catch (error) {
+    const errorMessage =
+      error instanceof Error ? error.message : "알 수 없는 오류가 발생했습니다";
+    return NextResponse.json({ error: errorMessage }, { status: 400 });
   }
 }
 
@@ -168,10 +153,9 @@ export async function DELETE(req: Request) {
     if (!deletedBlog)
       throw new Error("No blog post found for the specified date");
     return NextResponse.json({ message: "Blog post deleted successfully" });
-  } catch (error: any) {
-    return NextResponse.json(
-      { message: error.message },
-      { status: error.message.includes("required") ? 400 : 404 }
-    );
+  } catch (error) {
+    const errorMessage =
+      error instanceof Error ? error.message : "알 수 없는 오류가 발생했습니다";
+    return NextResponse.json({ error: errorMessage }, { status: 400 });
   }
 }

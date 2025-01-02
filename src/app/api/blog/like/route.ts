@@ -20,9 +20,8 @@ export async function POST(req: Request) {
 
     return NextResponse.json({ likes: blog.likey });
   } catch (error) {
-    return NextResponse.json(
-      { message: "Failed to like blog post" },
-      { status: 500 }
-    );
+    const errorMessage =
+      error instanceof Error ? error.message : "알 수 없는 오류가 발생했습니다";
+    return NextResponse.json({ error: errorMessage }, { status: 400 });
   }
 }

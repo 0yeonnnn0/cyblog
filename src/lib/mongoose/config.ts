@@ -14,10 +14,11 @@ interface Cached {
 
 // 개발 환경에서 핫 리로딩을 위한 전역 캐시 유지
 declare global {
+  // eslint-disable-next-line no-var
   var mongoose: Cached;
 }
 
-let cached: Cached = global.mongoose || { conn: null, promise: null };
+const cached: Cached = global.mongoose || { conn: null, promise: null };
 
 async function connectDB(): Promise<typeof mongoose> {
   try {

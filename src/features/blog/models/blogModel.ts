@@ -22,8 +22,9 @@ export async function getBlogPost(date: string): Promise<IBlog | null> {
     const { data } = await blogApi.get(`?post=${date}`);
     return data;
   } catch (error) {
-    console.error("블로그 포스트 조회 실패:", error);
-    return null;
+    const errorMessage =
+      error instanceof Error ? error.message : "알 수 없는 오류가 발생했습니다";
+    throw new Error(errorMessage);
   }
 }
 
@@ -38,7 +39,9 @@ export async function createBlogPost(
     });
     return newBlog;
   } catch (error) {
-    throw new Error("블로그 포스트 생성 실패");
+    const errorMessage =
+      error instanceof Error ? error.message : "알 수 없는 오류가 발생했습니다";
+    throw new Error(errorMessage);
   }
 }
 
