@@ -3,14 +3,6 @@ import { NextResponse } from "next/server";
 import Blog from "@/model/Blog"; // IBlog 모델
 import connectDB from "@/lib/mongoose/config";
 
-const getDayRange = (date: string) => {
-  const startOfDay = new Date(date);
-  startOfDay.setUTCHours(0, 0, 0, 0);
-  const endOfDay = new Date(date);
-  endOfDay.setUTCHours(23, 59, 59, 999);
-  return { startOfDay, endOfDay };
-};
-
 const validateDate = (date: string | null) => {
   if (!date) throw new Error("Date parameter is required");
   return date;

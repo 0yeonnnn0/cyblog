@@ -16,10 +16,14 @@ import { useSelectDateStore } from "@/store/blog/selectDateStore";
 interface Posts {
   content: string;
   author: string;
+  likey?: number;
 }
 
 export function useBlogState() {
-  const [posts, setPosts] = useState({ content: "", author: "" });
+  const [posts, setPosts] = useState({
+    content: "",
+    author: "",
+  });
 
   const isEdited = useEditStatusStore((state) => state.isEdited);
   const setIsEdited = useEditStatusStore((state) => state.setIsEdited);
