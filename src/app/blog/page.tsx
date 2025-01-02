@@ -1,13 +1,10 @@
 "use client";
 
 import { useBlogController } from "./blogController";
-import { TextEditor } from "@/components/TextEditor";
-import { BlogFooter, DateView } from "./blogView";
-import ReactMarkdown from "react-markdown";
-import rehypeRaw from "rehype-raw";
-import remarkGfm from "remark-gfm";
-import { useSelectDateStore } from "@/store/blogStore";
-
+import { useSelectDateStore } from "@/store/blog/selectDateStore";
+import { DateView } from "./components/DateView";
+import { BlogFooter } from "./components/BlogFooter";
+import BlogContent from "./components/BlogContent";
 export default function BlogPage() {
   const {
     posts,
@@ -25,29 +22,19 @@ export default function BlogPage() {
   return (
     <div className="flex flex-col content-between min-h-full">
       <DateView />
+      <BlogContent
+        isEdited={isEdited}
+        // @ts-ignore, 추후 post의 타입 수정
+        posts={posts}
+        currentPost={currentPost}
+        handleContentChange={handleContentChange}
+      />
 
-      <div className="blog-content p-2 flex-1 h-full font-mono">
-        {isEdited ? (
-          <TextEditor
-            value={posts.content || ""}
-            setValue={handleContentChange}
-          />
-        ) : currentPost ? (
-          <ReactMarkdown
-            rehypePlugins={[rehypeRaw]}
-            remarkPlugins={[remarkGfm]}
-          >
-            {currentPost?.content}
-          </ReactMarkdown>
-        ) : (
-          <p>일기가 존재하지 않습니다.</p>
-        )}
-      </div>
       <BlogFooter
         handleLikey={handleLikey}
         handleEdit={handleEdit}
         handleCancel={handleCancel}
-        handleSave={() => selectDate && handleSave(selectDate)} // null 체크
+        handleSave={() => selectDate && handleSave(selectDate)}
         handleDelete={handleDelete}
       />
     </div>

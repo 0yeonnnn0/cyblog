@@ -1,16 +1,14 @@
 import { useState, useEffect } from "react";
 import {
-  useBlogStore,
-  useEditStatusStore,
-  useSelectDateStore,
-} from "@/store/blogStore";
-import {
   createBlogPost,
   deleteBlogPost,
   getBlogPost,
   likeBlogPost,
 } from "./blogModel";
 import { useUserStore } from "@/store/userStore";
+import { useEditStatusStore } from "@/store/blog/editStatusStore";
+import { useCurrentPostStore } from "@/store/blog/currentPostStore";
+import { useSelectDateStore } from "@/store/blog/selectDateStore";
 
 export function useBlogState() {
   const [posts, setPosts] = useState({ content: "", author: "" });
@@ -18,9 +16,11 @@ export function useBlogState() {
   const isEdited = useEditStatusStore((state) => state.isEdited);
   const setIsEdited = useEditStatusStore((state) => state.setIsEdited);
 
-  const clearCurrentPost = useBlogStore((state) => state.clearCurrentPost);
-  const currentPost = useBlogStore((state) => state.currentPost);
-  const setCurrentPost = useBlogStore((state) => state.setCurrentPost);
+  const clearCurrentPost = useCurrentPostStore(
+    (state) => state.clearCurrentPost
+  );
+  const currentPost = useCurrentPostStore((state) => state.currentPost);
+  const setCurrentPost = useCurrentPostStore((state) => state.setCurrentPost);
 
   return {
     posts,
@@ -35,7 +35,7 @@ export function useBlogState() {
 
 export function useBlogActions(posts: any, setIsEdited: any) {
   const user = useUserStore((state) => state.user);
-  const { selectDate } = useSelectDateStore();
+  const selectDate = useSelectDateStore((state) => state.selectDate);
 
   const handleLikey = async (postId: string) => {
     await likeBlogPost(postId);
@@ -79,7 +79,7 @@ export function useBlogData(
   setCurrentPost: any,
   clearCurrentPost: any
 ) {
-  const { selectDate } = useSelectDateStore();
+  const selectDate = useSelectDateStore((state) => state.selectDate);
 
   useEffect(() => {
     const fetchData = async () => {

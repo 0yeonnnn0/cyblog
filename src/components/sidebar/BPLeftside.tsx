@@ -1,16 +1,16 @@
 "use client";
-import { useSelectDateStore } from "@/store/blogStore";
-import { useBlogStore } from "@/store/blogStore";
 import { useLoadingStore } from "@/store/loadingStore";
-import { BlogButton } from "@/app/blog/blogView";
+import { BlogButton } from "@/app/blog/components/BlogButton";
 import { useEffect } from "react";
 import { CalendarBody } from "../Calendar";
 import { SocialIcons } from "./SocialIcons";
 import { useRouter } from "next/navigation";
+import { useSelectDateStore } from "@/store/blog/selectDateStore";
+import { useCurrentPostStore } from "@/store/blog/currentPostStore";
 
 export function BPLeftside() {
   const { selectDate, setSelectDate } = useSelectDateStore();
-  const { setCurrentPost, clearCurrentPost } = useBlogStore();
+  const { setCurrentPost, clearCurrentPost } = useCurrentPostStore();
   const { setIsLoading } = useLoadingStore();
   const router = useRouter();
 

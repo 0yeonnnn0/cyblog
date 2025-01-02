@@ -2,7 +2,7 @@
 
 import { useEffect } from "react";
 import { useRouter } from "next/navigation";
-import { useSelectDateStore } from "@/store/blogStore";
+import { useSelectDateStore } from "@/store/blog/selectDateStore";
 
 export default function HomePage() {
   const router = useRouter();

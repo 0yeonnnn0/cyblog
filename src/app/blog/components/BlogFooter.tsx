@@ -1,21 +1,8 @@
 import { LikeButton } from "@/components/blog/LikeButton";
-import {
-  useBlogStore,
-  useEditStatusStore,
-  useSelectDateStore,
-} from "@/store/blogStore";
+import { useEditStatusStore } from "@/store/blog/editStatusStore";
 import { useUserStore } from "@/store/userStore";
-import { formatDateToKorean } from "@/utils/dateUtils";
-
-export function DateView() {
-  const { selectDate } = useSelectDateStore();
-
-  return (
-    <time className="block mb-3 text-gray-600 font-medium">
-      {formatDateToKorean(selectDate)}
-    </time>
-  );
-}
+import { BlogButton } from "./BlogButton";
+import { useCurrentPostStore } from "@/store/blog/currentPostStore";
 
 interface BlogFooterProps {
   handleLikey: (postId: string) => Promise<void>;
@@ -33,7 +20,7 @@ export function BlogFooter({
 }: BlogFooterProps) {
   const user = useUserStore((state) => state.user);
   const isEdited = useEditStatusStore((state) => state.isEdited);
-  const currentPost = useBlogStore((state) => state.currentPost);
+  const currentPost = useCurrentPostStore((state) => state.currentPost);
 
   return (
     <footer className="flex justify-between border-t-2 border-gray-300 border-dashed px-4 pt-3">
@@ -76,37 +63,5 @@ export function BlogFooter({
         </div>
       )}
     </footer>
-  );
-}
-
-interface ButtonProps {
-  text: string;
-  onClick?: () => void;
-  variant?: "primary" | "secondary" | "danger";
-}
-
-export function BlogButton({
-  text,
-  onClick,
-  variant = "primary",
-}: ButtonProps) {
-  const variants = {
-    primary: "text-black hover:bg-blue-600",
-    secondary: "text-gray-700 hover:bg-gray-50",
-    danger: "text-black hover:bg-red-600",
-  };
-
-  return (
-    <button
-      className={`
-        px-4 py-1.5 rounded-sm
-        transition-colors duration-200
-        border border-gray-300
-        ${variants[variant]}
-      `}
-      onClick={onClick}
-    >
-      {text}
-    </button>
   );
 }

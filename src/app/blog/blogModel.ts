@@ -1,19 +1,28 @@
+import axios, { AxiosInstance } from "axios";
 import { IBlog } from "@/model/Blog";
 
-export async function getBlogPost(date: string) {
+const blogApi: AxiosInstance = axios.create({
+  baseURL: "/api/blog",
+  headers: {
+    "Content-Type": "application/json",
+  },
+});
+
+// 에러 인터셉터
+blogApi.interceptors.response.use(
+  (response) => response,
+  (error) => {
+    console.error("API 에러:", error.response?.data || error.message);
+    return Promise.reject(error);
+  }
+);
+
+export async function getBlogPost(date: string): Promise<IBlog | null> {
   try {
-    const response = await fetch(`/api/blog?post=${date}`, {
-      method: "GET",
-    });
-
-    if (!response.ok) {
-      throw new Error("Failed to fetch blog posts");
-    }
-
-    const data = await response.json();
+    const { data } = await blogApi.get(`?post=${date}`);
     return data;
   } catch (error) {
-    console.error(error);
+    console.error("블로그 포스트 조회 실패:", error);
     return null;
   }
 }
@@ -23,54 +32,29 @@ export async function createBlogPost(
   localDate: string
 ): Promise<IBlog> {
   try {
-    const postBlogData = await fetch("/api/blog", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({
-        ...data,
-        date: localDate,
-      }),
+    const { data: newBlog } = await blogApi.post("", {
+      ...data,
+      date: localDate,
     });
-
-    if (!postBlogData.ok) {
-      throw new Error("Failed to create blog post");
-    }
-
-    const newBlog = await postBlogData.json();
     return newBlog;
   } catch (error) {
-    throw new Error("Failed to create blog post");
+    throw new Error("블로그 포스트 생성 실패");
   }
 }
 
-export async function deleteBlogPost(date: string) {
+export async function deleteBlogPost(date: string): Promise<void> {
   try {
-    const response = await fetch(`/api/blog?date=${date}`, {
-      method: "DELETE",
-    });
-
-    if (!response.ok) {
-      throw new Error("Failed to delete blog post");
-    }
-
-    console.log("Blog post deleted successfully");
+    await blogApi.delete(`?date=${date}`);
+    console.log("블로그 포스트가 성공적으로 삭제되었습니다");
   } catch (error) {
-    console.error(error);
+    console.error("블로그 포스트 삭제 실패:", error);
   }
 }
 
-export async function likeBlogPost(id: string) {
+export async function likeBlogPost(id: string): Promise<void> {
   try {
-    const response = await fetch(`/api/blog/like`, {
-      method: "POST",
-      body: JSON.stringify({ id }),
-      headers: {
-        "Content-Type": "application/json",
-      },
-    });
+    await blogApi.post("/like", { id });
   } catch (error) {
-    console.error(error);
+    console.error("블로그 포스트 좋아요 실패:", error);
   }
 }
