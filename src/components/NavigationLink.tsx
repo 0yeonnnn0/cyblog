@@ -1,4 +1,6 @@
-import { useRouter } from "next/navigation"; // Next.js의 useRouter 사용
+"use client";
+
+import Link from "next/link";
 
 interface NavigationLinkProps {
   path: string;
@@ -6,16 +8,9 @@ interface NavigationLinkProps {
 }
 
 export default function NavigationLink({ path, label }: NavigationLinkProps) {
-  const router = useRouter();
-
   return (
-    <a
-      className="cursor-pointer text-center"
-      onClick={() => {
-        router.push(path);
-      }}
-    >
+    <Link href={path} className="hover:text-gray-800">
       {label}
-    </a>
+    </Link>
   );
 }
