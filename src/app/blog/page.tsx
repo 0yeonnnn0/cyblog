@@ -6,7 +6,6 @@ import { BlogFooter, DateView } from "./blogView";
 import ReactMarkdown from "react-markdown";
 import rehypeRaw from "rehype-raw";
 import remarkGfm from "remark-gfm";
-import { useSearchParams } from "next/navigation";
 import { useSelectDateStore } from "@/store/blogStore";
 
 export default function BlogPage() {

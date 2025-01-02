@@ -18,7 +18,7 @@ export function DateView() {
 }
 
 interface BlogFooterProps {
-  handleLikey: () => void;
+  handleLikey: (postId: string) => Promise<void>;
   handleEdit: () => void;
   handleSave: () => void;
   handleCancel: () => void;
@@ -39,7 +39,10 @@ export function BlogFooter({
     <footer className="flex justify-between border-t-2 border-gray-300 border-dashed px-4 pt-3">
       <div className="flex items-center">
         {currentPost && (
-          <LikeButton count={currentPost.likey} onLike={handleLikey} />
+          <LikeButton
+            count={currentPost.likey}
+            onLike={() => handleLikey(currentPost._id as string)}
+          />
         )}
       </div>
 
