@@ -77,9 +77,9 @@ function CombinedButtons({
 
   return (
     <div>
-      {buttons.map(
-        (button, index) =>
-          button.condition !== false && (
+      {buttons.map((button, index) => {
+        if (button.condition !== false) {
+          return (
             <button
               key={index}
               className={getButtonClass(button.path)}
@@ -91,8 +91,10 @@ function CombinedButtons({
             >
               {button.label}
             </button>
-          )
-      )}
+          );
+        }
+        return null;
+      })}
     </div>
   );
 }
