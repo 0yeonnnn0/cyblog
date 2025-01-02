@@ -3,7 +3,7 @@ import { create } from "zustand";
 export interface CurrentPost {
   content: string;
   author: string;
-  likey: number;
+  likey?: number;
   _id?: string;
 }
 
