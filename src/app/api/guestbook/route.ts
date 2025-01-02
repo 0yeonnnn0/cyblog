@@ -1,6 +1,6 @@
 import { NextResponse } from "next/server";
 import Guestbook from "@/model/Guestbook";
-import connectDB from "@/config/mongoose"; // DB 연결 함수
+import connectDB from "@/lib/mongoose/config"; // DB 연결 함수
 
 // GET 요청 처리
 export async function GET() {

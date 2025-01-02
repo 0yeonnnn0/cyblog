@@ -1,22 +1,6 @@
 import { useRouter } from "next/navigation";
-interface HPViewsProps {
-  todayViews: number;
-  totalViews: number;
-}
 
-export function HPViews({ todayViews, totalViews }: HPViewsProps) {
-  return (
-    <p className="h-14 pt-9 text-xs text-center select-none">
-      <span>Today</span>
-      <span className="text-theme-color-blue">{todayViews}</span>
-      <span>
-        | Total <span className="text-theme-color-blue">{totalViews}</span>
-      </span>
-    </p>
-  );
-}
-
-export function HPBlogTitle() {
+export function BlogTitle() {
   const router = useRouter();
 
   return (

@@ -6,18 +6,45 @@ if (!MONGODB_URI) {
   throw new Error("MONGODB_URI가 환경변수에 설정되지 않았습니다.");
 }
 
-async function connectDB() {
+// 글로벌 객체에 캐싱된 연결 저장
+interface Cached {
+  conn: typeof mongoose | null;
+  promise: Promise<typeof mongoose> | null;
+}
+
+// 개발 환경에서 핫 리로딩을 위한 전역 캐시 유지
+declare global {
+  var mongoose: Cached;
+}
+
+let cached: Cached = global.mongoose || { conn: null, promise: null };
+
+async function connectDB(): Promise<typeof mongoose> {
   try {
-    // 이미 연결된 경우 재연결하지 않음
-    if (mongoose.connection.readyState === 1) {
-      return;
+    if (cached.conn) {
+      return cached.conn;
     }
 
-    const conn = await mongoose.connect(MONGODB_URI as string);
-    console.log(`MongoDB Connected: ${conn.connection.host}`);
+    if (!cached.promise) {
+      cached.promise = mongoose.connect(MONGODB_URI as string);
+    }
+
+    cached.conn = await cached.promise;
+
+    // 연결 에러 이벤트 핸들링
+    cached.conn.connection.on("error", (err) => {
+      console.error("MongoDB 연결 에러:", err);
+      cached.conn = null;
+      cached.promise = null;
+    });
+
+    console.log(`MongoDB Connected: ${cached.conn.connection.host}`);
+    return cached.conn;
   } catch (error) {
-    console.error(`MongoDB 연결 오류:`, error);
-    throw error; // 에러를 던져서 호출하는 쪽에서 처리하도록 함
+    console.error("MongoDB 연결 실패:", error);
+    cached.conn = null;
+    cached.promise = null;
+    throw error;
   }
 }
 
