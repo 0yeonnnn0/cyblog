@@ -84,9 +84,11 @@ function CombinedButtons({
               key={index}
               className={getButtonClass(button.path)}
               onClick={() => {
-                button.label === "LogOut"
-                  ? handleLogout()
-                  : router.push(button.path);
+                if (button.label === "LogOut") {
+                  handleLogout();
+                } else {
+                  router.push(button.path);
+                }
               }}
             >
               {button.label}
