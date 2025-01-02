@@ -2,7 +2,6 @@ import { useEffect, useState } from "react";
 import { blogService } from "../../../features/blog/services/blogService";
 import { useSelectDateStore } from "@/store/blog/selectDateStore";
 import { useCurrentPostStore } from "@/store/blog/currentPostStore";
-import { IBlog } from "@/model/Blog";
 
 export function useBlogData() {
   const selectDate = useSelectDateStore((state) => state.selectDate);
@@ -10,7 +9,7 @@ export function useBlogData() {
   const clearCurrentPost = useCurrentPostStore(
     (state) => state.clearCurrentPost
   );
-  const [posts, setPosts] = useState<Pick<IBlog, "content" | "author">>({
+  const [posts, setPosts] = useState({
     content: "",
     author: "",
   });
@@ -24,7 +23,11 @@ export function useBlogData() {
             content: data.content,
             author: data.author,
           });
-          setCurrentPost(data);
+          setCurrentPost({
+            content: data.content,
+            author: data.author,
+            likey: data.likey,
+          });
         } else {
           setPosts({ content: "", author: "" });
           clearCurrentPost();
