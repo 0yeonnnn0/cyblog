@@ -1,8 +1,9 @@
-//  Axios 인스턴스 설정
-
 import { baseApi } from "@/lib/axios/instance";
 
-const blogApi = baseApi;
-blogApi.defaults.baseURL = "/api/blog";
+// baseURL을 설정하는 인터셉터 추가
+baseApi.interceptors.request.use((config) => {
+  config.url = `/api/blog${config.url}`;
+  return config;
+});
 
-export default blogApi;
+export default baseApi;

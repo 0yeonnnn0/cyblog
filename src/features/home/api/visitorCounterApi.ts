@@ -1,9 +1,11 @@
+import axios from "axios";
+
 export const getVisitorCount = async () => {
-  const response = await fetch("/api/visitorcounter");
-  return response.json();
+  const { data } = await axios.get("/api/visitorcounter");
+  return data;
 };
 
 export const incrementVisitorCount = async () => {
-  const response = await fetch("/api/visitorcounter", { method: "POST" });
-  return response.json();
+  const { data } = await axios.post("/api/visitorcounter");
+  return data;
 };
