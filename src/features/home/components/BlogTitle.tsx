@@ -14,7 +14,7 @@ export function BlogTitle() {
         Trust.
       </p>
       <span className="float-right text-xs mr-2 text-gray-600">
-        https://cyblog.fly.dev
+        https://cyblog.vercel.app
       </span>
     </div>
   );
