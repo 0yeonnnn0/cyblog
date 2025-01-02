@@ -1,5 +1,6 @@
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
+  faLinkedin,
   faSquareGithub,
   faSquareInstagram,
 } from "@fortawesome/free-brands-svg-icons";
@@ -15,6 +16,7 @@ export function SocialIcons() {
       />
       <SocialIcon url="https://github.com/0yeonnnn0" icon={faSquareGithub} />
       <SocialIcon url="https://lmsd1.tistory.com/" icon={faSquarePen} />
+      <SocialIcon url="https://lmsd1.tistory.com/" icon={faLinkedin} />
     </div>
   );
 }

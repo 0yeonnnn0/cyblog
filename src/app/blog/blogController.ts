@@ -12,7 +12,6 @@ import {
 } from "./blogModel";
 import { useUserStore } from "@/store/userStore";
 import { useSearchParams } from "next/navigation";
-import { useCalendarStore } from "@/store/calendarStore";
 
 export function useBlogController() {
   const [posts, setPosts] = useState({ content: "", author: "" });
@@ -38,6 +37,7 @@ export function useBlogController() {
   const handleEdit = () => {
     setIsEdited(true);
   };
+
   const handleCancel = () => {
     setIsEdited(false);
     setPosts((prevPosts) => ({

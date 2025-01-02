@@ -1,10 +1,9 @@
+import { LikeButton } from "@/components/blog/LikeButton";
 import {
   useBlogStore,
   useEditStatusStore,
   useSelectDateStore,
 } from "@/store/blogStore";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faHeart } from "@fortawesome/free-regular-svg-icons";
 import { useUserStore } from "@/store/userStore";
 import { formatDateToKorean } from "@/utils/dateUtils";
 
@@ -74,24 +73,6 @@ export function BlogFooter({
         </div>
       )}
     </footer>
-  );
-}
-interface LikeButtonProps {
-  count: number;
-  onLike: () => void;
-}
-
-export function LikeButton({ count, onLike }: LikeButtonProps) {
-  return (
-    <div className="flex items-center gap-2">
-      <button
-        className="transition-colors duration-200 hover:text-red-500"
-        onClick={onLike}
-      >
-        <FontAwesomeIcon icon={faHeart} className="text-xl" />
-      </button>
-      <span className="text-gray-600">{count}</span>
-    </div>
   );
 }
 

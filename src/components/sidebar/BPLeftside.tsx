@@ -1,3 +1,4 @@
+"use client";
 import { useSelectDateStore } from "@/store/blogStore";
 import { useBlogStore } from "@/store/blogStore";
 import { useLoadingStore } from "@/store/loadingStore";
@@ -5,11 +6,24 @@ import { BlogButton } from "@/app/blog/blogView";
 import { useEffect } from "react";
 import { CalendarBody } from "../Calendar";
 import { SocialIcons } from "./SocialIcons";
+import { useRouter } from "next/navigation";
 
 export function BPLeftside() {
   const { selectDate, setSelectDate } = useSelectDateStore();
   const { setCurrentPost, clearCurrentPost } = useBlogStore();
   const { setIsLoading } = useLoadingStore();
+  const router = useRouter();
+
+  const handleGoToday = () => {
+    const today = new Date().toLocaleDateString("en-CA", {
+      year: "numeric",
+      month: "2-digit",
+      day: "2-digit",
+    });
+    setSelectDate(today);
+    router.push("/blog?post=" + today);
+  };
+
   // 특정 날짜 포스트 조회
   useEffect(() => {
     if (selectDate) {
@@ -42,15 +56,7 @@ export function BPLeftside() {
           <BlogButton
             variant="secondary"
             text="Go Today"
-            onClick={() =>
-              setSelectDate(
-                new Date().toLocaleDateString("en-CA", {
-                  year: "numeric",
-                  month: "2-digit",
-                  day: "2-digit",
-                })
-              )
-            }
+            onClick={handleGoToday}
           />
         </div>
       </div>

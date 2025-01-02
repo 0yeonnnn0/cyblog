@@ -2,9 +2,8 @@ import { NextResponse } from "next/server";
 import Blog from "@/model/Blog"; // 모델 경로에 맞게 수정하세요
 import connectDB from "@/config/mongoose"; // DB 연결 함수
 
-connectDB();
-
 export async function POST(req: Request) {
+  await connectDB();
   const { id } = await req.json();
 
   try {

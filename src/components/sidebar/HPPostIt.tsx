@@ -41,7 +41,7 @@ export function HPPostIt() {
   const topButtons: Button[] = [
     { path: "/blog", label: "블로그" },
     { path: "/profile", label: "프로필" },
-    { path: "/guestbook", label: "방명록" },
+    // { path: "/guestbook", label: "방명록" },
     ...(user
       ? [{ path: "/auth/login", label: "LogOut" }]
       : [{ path: "/auth/login", label: "LogIn" }]),
