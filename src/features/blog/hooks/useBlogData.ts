@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { blogService } from "../_lib/services/blogService";
+import { blogService } from "../../../features/blog/services/blogService";
 import { useSelectDateStore } from "@/store/blog/selectDateStore";
 import { useCurrentPostStore } from "@/store/blog/currentPostStore";
 import { IBlog } from "@/model/Blog";

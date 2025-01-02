@@ -1,58 +1,30 @@
 "use client";
 import { useState, ChangeEvent } from "react";
-import { joinController } from "./joinController";
+import { useJoin } from "../../hooks/useJoin";
+import type { JoinFormData } from "@/types/auth";
 
-interface FormData {
-  email: string;
-  password: string;
-  username: string;
-}
-
-interface ValidationErrors {
-  email?: string;
-  password?: string;
-  username?: string;
-}
-
-export default function SignUpForm() {
-  const [formData, setFormData] = useState<FormData>({
+export function JoinForm() {
+  const { handleJoin, isLoading, errors } = useJoin();
+  const [formData, setFormData] = useState<JoinFormData>({
     email: "",
     password: "",
     username: "",
   });
 
-  const [errors, setErrors] = useState<ValidationErrors>({});
-  const [isSubmitting, setIsSubmitting] = useState<boolean>(false);
-
   const handleChange = (e: ChangeEvent<HTMLInputElement>): void => {
     const { name, value } = e.target;
-    setFormData((prev) => ({
-      ...prev,
-      [name]: value,
-    }));
-    // 해당 필드의 에러 메시지 삭제
-    if (errors[name as keyof ValidationErrors]) {
-      setErrors((prev) => ({
-        ...prev,
-        [name]: undefined,
-      }));
-    }
+    setFormData(prev => ({ ...prev, [name]: value }));
+  };
+
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    await handleJoin(formData);
   };
 
   return (
     <div className="flex justify-center items-center bg-gray-100">
       <div className="bg-white p-8 rounded-lg shadow-md w-full max-w-md">
-        <form
-          onSubmit={(e) => {
-            e.preventDefault();
-            joinController.join({
-              email: formData.email,
-              password: formData.password,
-              username: formData.username,
-            });
-          }}
-          className="space-y-4"
-        >
+        <form onSubmit={handleSubmit} className="space-y-4">
           <div>
             <label className="block text-sm font-medium text-gray-700 mb-1">
               사용자 이름
@@ -112,42 +84,15 @@ export default function SignUpForm() {
 
           <button
             type="submit"
-            disabled={isSubmitting}
+            disabled={isLoading}
             className={`w-full h-login-button rounded-login-button bg-theme-color-blue text-white ${
-              isSubmitting ? "bg-blue-300 cursor-not-allowed" : "null"
+              isLoading ? "bg-blue-300 cursor-not-allowed" : ""
             }`}
           >
-            {isSubmitting ? "처리중..." : "회원가입"}
+            {isLoading ? "처리중..." : "회원가입"}
           </button>
         </form>
       </div>
     </div>
   );
-}
-
-// const validateForm = (): boolean => {
-//   const newErrors: ValidationErrors = {};
-
-//   // 이메일 검증
-//   if (!formData.email) {
-//     newErrors.email = "이메일을 입력해주세요";
-//   } else if (!/\S+@\S+\.\S+/.test(formData.email)) {
-//     newErrors.email = "올바른 이메일 형식이 아닙니다";
-//   }
-
-//   // 사용자 이름 검증
-//   if (!formData.username) {
-//     newErrors.username = "사용자 이름을 입력해주세요";
-//   } else if (formData.username.length < 2) {
-//     newErrors.username = "사용자 이름은 2자 이상이어야 합니다";
-//   }
-
-//   // 비밀번호 검증
-//   if (!formData.password) {
-//     newErrors.password = "비밀번호를 입력해주세요";
-//   } else if (formData.password.length < 6) {
-//     newErrors.password = "비밀번호는 6자 이상이어야 합니다";
-//   }
-//   setErrors(newErrors);
-//   return Object.keys(newErrors).length === 0;
-// };
+} 

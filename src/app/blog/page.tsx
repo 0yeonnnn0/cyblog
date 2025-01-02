@@ -1,10 +1,10 @@
 "use client";
 
-import { useBlogController } from "./blogController";
 import { useSelectDateStore } from "@/store/blog/selectDateStore";
-import { DateView } from "./components/DateView";
-import { BlogFooter } from "./components/BlogFooter";
-import BlogContent from "./components/BlogContent";
+import { DateView } from "../../features/blog/components/DateView";
+import { BlogFooter } from "../../features/blog/components/BlogFooter";
+import BlogContent from "../../features/blog/components/BlogContent";
+import { useBlogController } from "@/features/blog/controllers/blogController";
 export default function BlogPage() {
   const {
     posts,

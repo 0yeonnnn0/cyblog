@@ -1,11 +1,11 @@
 "use client";
 import "@/app/globals.css";
-import { HPPostIt } from "@/components/sidebar/HPPostIt";
+import { HPPostIt } from "@/features/sidebar/HPPostIt";
 import { ReactNode } from "react";
 import { usePathname } from "next/navigation";
 import { HPViews, HPBlogTitle } from "./homeView";
-import { HPLeftSide } from "@/components/sidebar/HPLeftSide";
-import { BPLeftside } from "@/components/sidebar/BPLeftside";
+import { HPLeftSide } from "@/features/sidebar/HPLeftSide";
+import { BPLeftside } from "@/features/sidebar/BPLeftside";
 
 export default function RootLayout({ children }: { children: ReactNode }) {
   const pathname = usePathname();

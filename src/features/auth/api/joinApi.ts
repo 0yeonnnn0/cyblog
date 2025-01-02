@@ -4,19 +4,15 @@ import {
   updateProfile,
   getIdToken,
 } from "firebase/auth";
+import type { AuthCredentials } from "@/types/auth";
 
-export interface AuthCredentials {
-  email: string;
-  password: string;
-  username?: string;
-}
-
-export async function registerByFirebase({
+export async function registerUser({
   email,
   password,
   username,
 }: AuthCredentials) {
   try {
+    // Firebase 회원가입
     const userCredential = await createUserWithEmailAndPassword(
       auth,
       email,
@@ -24,13 +20,16 @@ export async function registerByFirebase({
     );
     const user = userCredential.user;
 
-    await updateProfile(user, { displayName: username });
+    // 사용자 프로필 업데이트
+    if (username) {
+      await updateProfile(user, { displayName: username });
+    }
 
+    // 토큰 발급
     const token = await getIdToken(user);
-    console.log("Registration Success At registerByFirebase");
     return token;
   } catch (error) {
-    console.error("Registration Failed At registerByFirebase");
+    console.error("Firebase Registration Failed:", error);
     throw error;
   }
 }

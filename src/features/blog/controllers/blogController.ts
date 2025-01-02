@@ -4,7 +4,7 @@ import {
   deleteBlogPost,
   getBlogPost,
   likeBlogPost,
-} from "./blogModel";
+} from "@/features/blog/models/blogModel";
 import { useUserStore } from "@/store/userStore";
 import { useEditStatusStore } from "@/store/blog/editStatusStore";
 import { useCurrentPostStore } from "@/store/blog/currentPostStore";

@@ -1,7 +1,7 @@
-import { LikeButton } from "@/components/blog/LikeButton";
+import { LikeButton } from "@/features/blog/components/LikeButton";
 import { useEditStatusStore } from "@/store/blog/editStatusStore";
 import { useUserStore } from "@/store/userStore";
-import { BlogButton } from "./BlogButton";
+import { BlogButton } from "@/features/blog/components/BlogButton";
 import { useCurrentPostStore } from "@/store/blog/currentPostStore";
 
 interface BlogFooterProps {

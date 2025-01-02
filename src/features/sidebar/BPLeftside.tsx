@@ -1,12 +1,12 @@
 "use client";
 import { useLoadingStore } from "@/store/ui/loadingStore";
-import { BlogButton } from "@/app/blog/components/BlogButton";
+import { BlogButton } from "@/features/blog/components/BlogButton";
 import { useEffect } from "react";
-import { CalendarBody } from "../Calendar";
-import { SocialIcons } from "./SocialIcons";
+import { SocialIcons } from "@/features/sidebar/SocialIcons";
 import { useRouter } from "next/navigation";
 import { useSelectDateStore } from "@/store/blog/selectDateStore";
 import { useCurrentPostStore } from "@/store/blog/currentPostStore";
+import { CalendarBody } from "@/components/Calendar";
 
 export function BPLeftside() {
   const { selectDate, setSelectDate } = useSelectDateStore();
