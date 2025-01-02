@@ -13,7 +13,7 @@ export function JoinForm() {
 
   const handleChange = (e: ChangeEvent<HTMLInputElement>): void => {
     const { name, value } = e.target;
-    setFormData(prev => ({ ...prev, [name]: value }));
+    setFormData((prev) => ({ ...prev, [name]: value }));
   };
 
   const handleSubmit = async (e: React.FormEvent) => {
@@ -34,7 +34,7 @@ export function JoinForm() {
               name="username"
               value={formData.username}
               onChange={handleChange}
-              className={`w-full px-3 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 ${
+              className={`w-full px-3 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 font-mono ${
                 errors.username ? "border-red-500" : "border-gray-300"
               }`}
               placeholder="사용자 이름을 입력하세요"
@@ -53,7 +53,7 @@ export function JoinForm() {
               name="email"
               value={formData.email}
               onChange={handleChange}
-              className={`w-full px-3 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 ${
+              className={`w-full px-3 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 font-mono ${
                 errors.email ? "border-red-500" : "border-gray-300"
               }`}
               placeholder="이메일을 입력하세요"
@@ -72,7 +72,7 @@ export function JoinForm() {
               name="password"
               value={formData.password}
               onChange={handleChange}
-              className={`w-full px-3 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 ${
+              className={`w-full px-3 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 font-mono ${
                 errors.password ? "border-red-500" : "border-gray-300"
               }`}
               placeholder="비밀번호를 입력하세요"
@@ -95,4 +95,4 @@ export function JoinForm() {
       </div>
     </div>
   );
-} 
+}

@@ -17,7 +17,7 @@ export function InputField({
       placeholder={placeholder}
       value={value}
       onChange={onChange}
-      className={`block h-12 w-full px-3 py-2 border border-gray-300 focus:outline-1 focus:outline-theme-color-blue sm:text-sm ${roundedClass}`}
+      className={`block h-12 w-full px-3 py-2 border border-gray-300 focus:outline-1 focus:outline-theme-color-blue sm:text-sm font-mono ${roundedClass} `}
     />
   );
 }
