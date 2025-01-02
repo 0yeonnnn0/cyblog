@@ -20,7 +20,8 @@ export function HPPostIt() {
   const { user, resetUser } = useUserStore();
 
   const getButtonClass = (path: string) => {
-    const isSelected = pathname === path;
+    const pathWithoutQuery = path.split("?")[0]; // 쿼리 파라미터 제거
+    const isSelected = pathname === pathWithoutQuery;
     const baseClass =
       "block w-post-it h-post-it rounded-post-it border border-black border-l-0 m-[3px] -ml-[1px] text-[17px] shadow-[0px_2px_0px_0px_rgba(0,0,0,0.5)] outline-none select-none";
     const hoverClass = "hover:bg-white hover:text-black";
@@ -38,8 +39,17 @@ export function HPPostIt() {
     window.location.reload();
   };
 
+  const getTodayString = () => {
+    return new Date().toLocaleDateString("en-CA", {
+      year: "numeric",
+      month: "2-digit",
+      day: "2-digit",
+      timeZone: Intl.DateTimeFormat().resolvedOptions().timeZone,
+    });
+  };
+
   const topButtons: Button[] = [
-    { path: "/blog", label: "블로그" },
+    { path: `/blog?post=${getTodayString()}`, label: "블로그" },
     { path: "/profile", label: "프로필" },
     // { path: "/guestbook", label: "방명록" },
     ...(user

@@ -1,7 +1,7 @@
 // src/app/blog/route.ts
 import { NextResponse } from "next/server";
-import connectDB from "@/config/mongoose"; // DB 연결 함수
 import Blog from "@/model/Blog"; // IBlog 모델
+import connectDB from "@/lib/mongoose/config";
 
 const getDayRange = (date: string) => {
   const startOfDay = new Date(date);

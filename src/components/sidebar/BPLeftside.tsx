@@ -1,5 +1,5 @@
 "use client";
-import { useLoadingStore } from "@/store/loadingStore";
+import { useLoadingStore } from "@/store/ui/loadingStore";
 import { BlogButton } from "@/app/blog/components/BlogButton";
 import { useEffect } from "react";
 import { CalendarBody } from "../Calendar";

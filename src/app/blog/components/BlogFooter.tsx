@@ -22,6 +22,8 @@ export function BlogFooter({
   const isEdited = useEditStatusStore((state) => state.isEdited);
   const currentPost = useCurrentPostStore((state) => state.currentPost);
 
+  if (!user) return null;
+
   return (
     <footer className="flex justify-between border-t-2 border-gray-300 border-dashed px-4 pt-3">
       <div className="flex items-center">
