@@ -1,16 +1,19 @@
-import { useBlogStore, useEditStatusStore } from "@/store/blogStore";
+import {
+  useBlogStore,
+  useEditStatusStore,
+  useSelectDateStore,
+} from "@/store/blogStore";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faHeart } from "@fortawesome/free-regular-svg-icons";
 import { useUserStore } from "@/store/userStore";
-import { useCalendarStore } from "@/store/calendarStore";
+import { formatDateToKorean } from "@/utils/dateUtils";
 
 export function DateView() {
-  const { selectDate } = useCalendarStore();
+  const { selectDate } = useSelectDateStore();
 
   return (
     <time className="block mb-3 text-gray-600 font-medium">
-      {selectDate?.getFullYear()}년 {selectDate?.getMonth() + 1}월{" "}
-      {selectDate?.getDate()}일
+      {formatDateToKorean(selectDate)}
     </time>
   );
 }

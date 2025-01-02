@@ -1,5 +1,9 @@
 import { useState, useEffect } from "react";
-import { useBlogStore, useEditStatusStore } from "@/store/blogStore";
+import {
+  useBlogStore,
+  useEditStatusStore,
+  useSelectDateStore,
+} from "@/store/blogStore";
 import {
   createBlogPost,
   deleteBlogPost,
@@ -20,7 +24,7 @@ export function useBlogController() {
   const isEdited = useEditStatusStore((state) => state.isEdited);
   const setIsEdited = useEditStatusStore((state) => state.setIsEdited);
 
-  const selectedDate = useCalendarStore((state) => state.selectDate);
+  const { selectDate } = useSelectDateStore();
 
   const clearCurrentPost = useBlogStore((state) => state.clearCurrentPost);
   const currentPost = useBlogStore((state) => state.currentPost);
@@ -42,22 +46,24 @@ export function useBlogController() {
     }));
   };
 
-  const handleSave = async () => {
-    const selectedDateStr = selectedDate.toISOString().split("T")[0];
+  const handleSave = async (queryDate: string) => {
+    console.log("queryDate", queryDate);
+
+    if (!queryDate) return;
 
     const blogData = {
       author: user?.username || "Guest",
       content: posts.content,
     };
 
-    console.log("selectedDateStr", selectedDateStr);
+    console.log("selectedDateStr", queryDate);
 
     try {
       await createBlogPost(
         {
           ...blogData,
         },
-        selectedDateStr
+        queryDate
       );
 
       setIsEdited(false);
@@ -70,7 +76,7 @@ export function useBlogController() {
   const handleDelete = async () => {
     const confirmed = window.confirm("정말로 이 게시물을 삭제하시겠습니까?");
     if (confirmed) {
-      await deleteBlogPost(selectedDate.toISOString().split("T")[0]);
+      await deleteBlogPost(selectDate);
       console.log("Blog post deleted.");
       window.location.reload();
     }
@@ -83,9 +89,7 @@ export function useBlogController() {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const data = await getBlogPost(
-          selectedDate.toISOString().split("T")[0]
-        );
+        const data = await getBlogPost(selectDate);
 
         if (data) {
           setPosts({
@@ -105,7 +109,7 @@ export function useBlogController() {
     };
 
     fetchData();
-  }, [selectedDate]);
+  }, [selectDate]);
 
   return {
     posts,

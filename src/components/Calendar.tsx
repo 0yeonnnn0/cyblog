@@ -6,10 +6,11 @@ import Calendar from "react-calendar";
 import { useRouter } from "next/navigation";
 import "@/app/globals.css";
 import { useCalendarStore } from "@/store/calendarStore";
+import { getCalendarTileClassName } from "@/utils/dateUtils";
 
 interface CalendarBodyProps {
-  selectDate: Date;
-  setSelectDate: (date: Date) => void;
+  selectDate: string;
+  setSelectDate: (date: string) => void;
 }
 
 export function CalendarBody({ selectDate, setSelectDate }: CalendarBodyProps) {
@@ -37,21 +38,11 @@ export function CalendarBody({ selectDate, setSelectDate }: CalendarBodyProps) {
     fetchPostDates();
   }, [currentMonth, setPostDates]);
 
-  const tileClassName = ({ date, view }: { date: Date; view: string }) => {
-    if (view === "month") {
-      // date를 로컬 시간 기준 YYYY-MM-DD 형식으로 변환
-      const year = date.getFullYear();
-      const month = String(date.getMonth() + 1).padStart(2, "0");
-      const day = String(date.getDate()).padStart(2, "0");
-      const formattedDate = `${year}-${month}-${day}`;
+  // 타일 클래스명 설정
+  const tileClassName = ({ date, view }: { date: Date; view: string }) =>
+    getCalendarTileClassName({ date, view }, postDates);
 
-      if (postDates?.includes(formattedDate)) {
-        return "bold-date";
-      }
-    }
-    return null;
-  };
-
+  // 캘린더 시작 날짜 변경 시 처리
   const handleActiveStartDateChange = ({
     activeStartDate,
   }: {
@@ -65,9 +56,11 @@ export function CalendarBody({ selectDate, setSelectDate }: CalendarBodyProps) {
 
   // 날짜 클릭 시 경로 이동
   const handleDateClick = (date: Date) => {
-    setSelectDate(date);
-    router.push(`/?post=${date.toISOString().slice(0, 10)}`);
+    setSelectDate(date.toISOString().slice(0, 10));
+    router.push(`/blog?post=${date.toISOString().slice(0, 10)}`);
   };
+
+  const dateValue = new Date(selectDate + "T00:00:00"); // 타임존 이슈 방지를 위해 시간 추가
 
   return (
     <div>
@@ -79,10 +72,10 @@ export function CalendarBody({ selectDate, setSelectDate }: CalendarBodyProps) {
         minDetail="year"
         next2Label={null}
         prev2Label={null}
-        value={selectDate}
+        value={dateValue}
         onChange={(value) => {
           const date = value as Date;
-          setSelectDate(date);
+          setSelectDate(date.toISOString().slice(0, 10));
           handleDateClick(date);
         }}
         locale="ko"

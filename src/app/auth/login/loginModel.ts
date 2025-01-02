@@ -16,9 +16,7 @@ export const loginByFirebase = async ({ email, password }: LoginModelProps) => {
     );
     const user = userCredential.user;
     const { uid, email: userEmail, displayName } = user;
-
-    console.log("Login Success At loginByFirebase");
-
+    console.log("로그인 성공띠");
     return {
       uid,
       email: userEmail,

@@ -1,53 +1,16 @@
 "use client";
 
-import { TextEditor } from "@/components/TextEditor";
-import ReactMarkdown from "react-markdown";
-import rehypeRaw from "rehype-raw";
-import remarkGfm from "remark-gfm";
-import { useBlogController } from "./blog/blogController";
-import { BlogFooter, DateView } from "./blog/blogView";
+import { useEffect } from "react";
+import { useRouter } from "next/navigation";
+import { useSelectDateStore } from "@/store/blogStore";
 
-export default function BlogPage() {
-  const {
-    posts,
-    currentPost,
-    isEdited,
-    handleEdit,
-    handleSave,
-    handleContentChange,
-    handleDelete,
-    handleCancel,
-    handleLikey,
-  } = useBlogController();
+export default function HomePage() {
+  const router = useRouter();
+  const selectDate = useSelectDateStore((state) => state.selectDate);
 
-  return (
-    <div className="flex flex-col content-between min-h-full">
-      <DateView />
+  useEffect(() => {
+    router.push(`/blog?post=${selectDate}`);
+  }, [router]);
 
-      <div className="blog-content p-2 flex-1 h-full font-mono">
-        {isEdited ? (
-          <TextEditor
-            value={posts.content || ""}
-            setValue={handleContentChange}
-          />
-        ) : currentPost ? (
-          <ReactMarkdown
-            rehypePlugins={[rehypeRaw]}
-            remarkPlugins={[remarkGfm]}
-          >
-            {currentPost?.content}
-          </ReactMarkdown>
-        ) : (
-          <p>일기가 존재하지 않습니다.</p>
-        )}
-      </div>
-      <BlogFooter
-        handleLikey={handleLikey}
-        handleEdit={handleEdit}
-        handleCancel={handleCancel}
-        handleSave={handleSave}
-        handleDelete={handleDelete}
-      />
-    </div>
-  );
+  return null;
 }

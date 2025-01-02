@@ -1,10 +1,11 @@
 "use client";
 import "@/app/globals.css";
-import { HPPostIt } from "@/components/HPPostIt";
+import { HPPostIt } from "@/components/sidebar/HPPostIt";
 import { ReactNode } from "react";
 import { usePathname } from "next/navigation";
 import { HPViews, HPBlogTitle } from "./homeView";
-import { BPLeftside, HPLeftSide, SocialIcons } from "@/components/LeftSideView";
+import { HPLeftSide } from "@/components/sidebar/HPLeftSide";
+import { BPLeftside } from "@/components/sidebar/BPLeftside";
 
 export default function RootLayout({ children }: { children: ReactNode }) {
   const pathname = usePathname();
@@ -18,7 +19,7 @@ export default function RootLayout({ children }: { children: ReactNode }) {
               <HPViews todayViews={10} totalViews={100} />
 
               <div className="bg-white border-solid border-gray-400 border-3 rounded-2xl h-content w-content-left m-content-left p-content-left">
-                {pathname === "/" ? <BPLeftside /> : <HPLeftSide />}
+                {pathname === "/blog" ? <BPLeftside /> : <HPLeftSide />}
               </div>
             </div>
           </div>

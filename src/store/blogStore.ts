@@ -14,12 +14,17 @@ export const useBlogWrittenDateStore = create<BlogWrittenDateState>((set) => ({
 
 // 선택한 날짜 -> 특정 날짜의 게시글 보기용
 export interface SelectDateState {
-  selectDate: Date;
-  setSelectDate: (date: Date) => void;
+  selectDate: string;
+  setSelectDate: (date: string) => void;
 }
 
 export const useSelectDateStore = create<SelectDateState>((set) => ({
-  selectDate: new Date(), // 초기값을 null로 설정
+  selectDate: new Date().toLocaleDateString("en-CA", {
+    year: "numeric",
+    month: "2-digit",
+    day: "2-digit",
+    timeZone: Intl.DateTimeFormat().resolvedOptions().timeZone,
+  }), // 초기값은 오늘 날짜
   setSelectDate: (date) => set({ selectDate: date }),
 }));
 

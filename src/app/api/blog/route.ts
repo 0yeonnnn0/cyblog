@@ -153,16 +153,16 @@ export async function PUT(req: Request) {
     );
   }
 }
+
 // DELETE: 특정 블로그 게시물 삭제
 export async function DELETE(req: Request) {
   try {
     await connectDB();
 
     const date = validateDate(new URL(req.url).searchParams.get("date"));
-    const { startOfDay, endOfDay } = getDayRange(date);
 
     const deletedBlog = await Blog.findOneAndDelete({
-      createdAt: { $gte: startOfDay, $lt: endOfDay },
+      postDay: date,
     });
 
     if (!deletedBlog)

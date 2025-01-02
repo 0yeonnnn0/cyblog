@@ -17,8 +17,7 @@ interface CombinedButtonsProps {
 
 export function HPPostIt() {
   const pathname = usePathname();
-  const user = useUserStore((state) => state.user);
-  const resetUser = useUserStore((state) => state.resetUser);
+  const { user, resetUser } = useUserStore();
 
   const getButtonClass = (path: string) => {
     const isSelected = pathname === path;
@@ -40,18 +39,12 @@ export function HPPostIt() {
   };
 
   const topButtons: Button[] = [
-    { path: "/", label: "홈" },
+    { path: "/blog", label: "블로그" },
+    { path: "/profile", label: "프로필" },
+    { path: "/guestbook", label: "방명록" },
     ...(user
-      ? [
-          { path: "/profile", label: "프로필" },
-          { path: "/guestbook", label: "방명록" },
-          { path: "/auth/login", label: "로그아웃", condition: true },
-        ]
-      : [
-          { path: "/profile", label: "프로필" },
-          { path: "/guestbook", label: "방명록" },
-          { path: "/auth/login", label: "로그인", condition: true },
-        ]),
+      ? [{ path: "/auth/login", label: "LogOut" }]
+      : [{ path: "/auth/login", label: "LogIn" }]),
   ];
 
   return (
@@ -61,11 +54,6 @@ export function HPPostIt() {
         getButtonClass={getButtonClass}
         handleLogout={handleLogout}
       />
-      {/* <CombinedButtons
-        buttons={bottomButtons}
-        getButtonClass={getButtonClass}
-        handleLogout={handleLogout}
-      /> */}
     </div>
   );
 }

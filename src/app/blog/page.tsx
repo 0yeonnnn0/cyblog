@@ -6,6 +6,8 @@ import { BlogFooter, DateView } from "./blogView";
 import ReactMarkdown from "react-markdown";
 import rehypeRaw from "rehype-raw";
 import remarkGfm from "remark-gfm";
+import { useSearchParams } from "next/navigation";
+import { useSelectDateStore } from "@/store/blogStore";
 
 export default function BlogPage() {
   const {
@@ -19,6 +21,7 @@ export default function BlogPage() {
     handleCancel,
     handleLikey,
   } = useBlogController();
+  const selectDate = useSelectDateStore((state) => state.selectDate);
 
   return (
     <div className="flex flex-col content-between min-h-full">
@@ -45,7 +48,7 @@ export default function BlogPage() {
         handleLikey={handleLikey}
         handleEdit={handleEdit}
         handleCancel={handleCancel}
-        handleSave={handleSave}
+        handleSave={() => selectDate && handleSave(selectDate)} // null 체크
         handleDelete={handleDelete}
       />
     </div>
