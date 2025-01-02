@@ -4,10 +4,10 @@ import profileImg from "@/public/profile_pic.jpeg";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
   faCakeCandles,
+  faEnvelope,
   faLaptopCode,
   faUser,
 } from "@fortawesome/free-solid-svg-icons";
-import { faEnvelope } from "@fortawesome/free-regular-svg-icons";
 import "@/app/globals.css";
 
 const ProfilePage = () => {
