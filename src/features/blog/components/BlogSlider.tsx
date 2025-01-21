@@ -59,7 +59,7 @@ const BlogSlider = ({
 
   return (
     <div
-      className="relative h-[370px] font-mono group px-8 flex flex-col"
+      className="relative h-[370px] font-mono group pl-6 pr-4 flex flex-col"
       tabIndex={0}
       onKeyDown={handleKeyDown}
       aria-label="블로그 컨텐츠 슬라이더"
