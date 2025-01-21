@@ -1,6 +1,7 @@
 import "@/app/globals.css";
 import { ReactNode } from "react";
 import MainLayout from "./MainLayout";
+import { Analytics } from "@vercel/analytics/react";
 
 export const metadata = {
   title: "cyblog",
@@ -13,6 +14,7 @@ export const metadata = {
 export default function RootLayout({ children }: { children: ReactNode }) {
   return (
     <html lang="en">
+      <Analytics />
       <head>
         <link rel="icon" href="/favicon.ico" />
       </head>
