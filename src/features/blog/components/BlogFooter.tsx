@@ -1,7 +1,4 @@
-import { LikeButton } from "@/features/blog/components/LikeButton";
 import { useEditStatusStore } from "@/store/blog/editStatusStore";
-import { useUserStore } from "@/store/userStore";
-import { BlogButton } from "@/features/blog/components/BlogButton";
 import { useCurrentPostStore } from "@/store/blog/currentPostStore";
 import { BlogPagination } from "@/features/blog/components/BlogPagination";
 

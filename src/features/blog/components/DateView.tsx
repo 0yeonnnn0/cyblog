@@ -2,7 +2,6 @@ import { useSelectDateStore } from "@/store/blog/selectDateStore";
 import { formatDateToKorean } from "@/utils/dateUtils";
 import { useState } from "react";
 import { useEditStatusStore } from "@/store/blog/editStatusStore";
-import { useCurrentPostStore } from "@/store/blog/currentPostStore";
 import { useUserStore } from "@/store/userStore";
 
 interface DateViewProps {
