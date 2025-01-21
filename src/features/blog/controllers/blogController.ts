@@ -1,174 +1,178 @@
-import { useState, useEffect } from "react";
-import {
-  createBlogPost,
-  deleteBlogPost,
-  getBlogPost,
-  likeBlogPost,
-} from "@/features/blog/models/blogModel";
-import { useUserStore } from "@/store/userStore";
-import { useEditStatusStore } from "@/store/blog/editStatusStore";
-import {
-  CurrentPost,
-  useCurrentPostStore,
-} from "@/store/blog/currentPostStore";
-import { useSelectDateStore } from "@/store/blog/selectDateStore";
+// 이거 이제 사용 안함
+// useBlogPost로 대체됨
+// 나중에 controller랑 react query 차이를 알기 위해서 냅둠
 
-interface Posts {
-  content: string;
-  author: string;
-  likey?: number;
-}
+// import { useState, useEffect } from "react";
+// import {
+//   createBlogPost,
+//   deleteBlogPost,
+//   getBlogPost,
+//   likeBlogPost,
+// } from "@/features/blog/models/blogModel";
+// import { useUserStore } from "@/store/userStore";
+// import { useEditStatusStore } from "@/store/blog/editStatusStore";
+// import {
+//   CurrentPost,
+//   useCurrentPostStore,
+// } from "@/store/blog/currentPostStore";
+// import { useSelectDateStore } from "@/store/blog/selectDateStore";
 
-export function useBlogState() {
-  const [posts, setPosts] = useState({
-    content: "",
-    author: "",
-  });
+// interface Posts {
+//   content: string;
+//   author: string;
+//   likey?: number;
+// }
 
-  const isEdited = useEditStatusStore((state) => state.isEdited);
-  const setIsEdited = useEditStatusStore((state) => state.setIsEdited);
+// export function useBlogState() {
+//   const [posts, setPosts] = useState({
+//     content: "",
+//     author: "",
+//   });
 
-  const clearCurrentPost = useCurrentPostStore(
-    (state) => state.clearCurrentPost
-  );
-  const currentPost = useCurrentPostStore((state) => state.currentPost);
-  const setCurrentPost = useCurrentPostStore(
-    (state) => state.setCurrentPost
-  ) as (post: CurrentPost | null) => void;
+//   const isEdited = useEditStatusStore((state) => state.isEdited);
+//   const setIsEdited = useEditStatusStore((state) => state.setIsEdited);
 
-  return {
-    posts,
-    setPosts,
-    isEdited,
-    setIsEdited,
-    currentPost,
-    setCurrentPost,
-    clearCurrentPost,
-  };
-}
+//   const clearCurrentPost = useCurrentPostStore(
+//     (state) => state.clearCurrentPost
+//   );
+//   const currentPost = useCurrentPostStore((state) => state.currentPost);
+//   const setCurrentPost = useCurrentPostStore(
+//     (state) => state.setCurrentPost
+//   ) as (post: CurrentPost | null) => void;
 
-export function useBlogActions(
-  posts: Posts,
-  setIsEdited: (value: boolean) => void
-) {
-  const user = useUserStore((state) => state.user);
-  const selectDate = useSelectDateStore((state) => state.selectDate);
+//   return {
+//     posts,
+//     setPosts,
+//     isEdited,
+//     setIsEdited,
+//     currentPost,
+//     setCurrentPost,
+//     clearCurrentPost,
+//   };
+// }
 
-  const handleLikey = async (postId: string) => {
-    await likeBlogPost(postId);
-    window.location.reload();
-  };
+// export function useBlogActions(
+//   posts: Posts,
+//   setIsEdited: (value: boolean) => void
+// ) {
+//   const user = useUserStore((state) => state.user);
+//   const selectDate = useSelectDateStore((state) => state.selectDate);
 
-  const handleSave = async (queryDate: string) => {
-    if (!queryDate) return;
+//   const handleLikey = async (postId: string) => {
+//     await likeBlogPost(postId);
+//     window.location.reload();
+//   };
 
-    const blogData = {
-      author: user?.username || "Guest",
-      content: posts.content,
-    };
+//   const handleSave = async (queryDate: string) => {
+//     if (!queryDate) return;
 
-    try {
-      await createBlogPost(blogData, queryDate);
-      setIsEdited(false);
-      window.location.reload();
-    } catch (error) {
-      console.error("Error saving blog post:", error);
-    }
-  };
+//     const blogData = {
+//       author: user?.username || "Guest",
+//       content: posts.content,
+//     };
 
-  const handleDelete = async () => {
-    const confirmed = window.confirm("정말로 이 게시물을 삭제하시겠습니까?");
-    if (confirmed) {
-      await deleteBlogPost(selectDate);
-      window.location.reload();
-    }
-  };
+//     try {
+//       await createBlogPost(blogData, queryDate);
+//       setIsEdited(false);
+//       window.location.reload();
+//     } catch (error) {
+//       console.error("Error saving blog post:", error);
+//     }
+//   };
 
-  return {
-    handleLikey,
-    handleSave,
-    handleDelete,
-  };
-}
+//   const handleDelete = async () => {
+//     const confirmed = window.confirm("정말로 이 게시물을 삭제하시겠습니까?");
+//     if (confirmed) {
+//       await deleteBlogPost(selectDate);
+//       window.location.reload();
+//     }
+//   };
 
-export function useBlogData(
-  setPosts: React.Dispatch<React.SetStateAction<Posts>>,
-  setCurrentPost: (post: CurrentPost | null) => void,
-  clearCurrentPost: () => void
-) {
-  const selectDate = useSelectDateStore((state) => state.selectDate);
+//   return {
+//     handleLikey,
+//     handleSave,
+//     handleDelete,
+//   };
+// }
 
-  useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const data = await getBlogPost(selectDate);
-        if (data) {
-          setPosts({
-            content: data.content,
-            author: data.author,
-          });
-          setCurrentPost({
-            content: data.content,
-            author: data.author,
-            _id: data._id as string,
-            likey: data.likey,
-          });
-        } else {
-          setPosts({ content: "", author: "" });
-          clearCurrentPost();
-        }
-      } catch (error) {
-        console.error("Failed to fetch blog post:", error);
-        setPosts({ content: "", author: "" });
-        clearCurrentPost();
-      }
-    };
+// export function useBlogData(
+//   setPosts: React.Dispatch<React.SetStateAction<Posts>>,
+//   setCurrentPost: (post: CurrentPost | null) => void,
+//   clearCurrentPost: () => void
+// ) {
+//   const selectDate = useSelectDateStore((state) => state.selectDate);
 
-    fetchData();
-  }, [selectDate]);
-}
+//   useEffect(() => {
+//     const fetchData = async () => {
+//       try {
+//         const data = await getBlogPost(selectDate);
+//         if (data) {
+//           setPosts({
+//             content: data.content,
+//             author: data.author,
+//           });
+//           setCurrentPost({
+//             content: data.content,
+//             author: data.author,
+//             _id: data._id as string,
+//             likey: data.likey,
+//           });
+//         } else {
+//           setPosts({ content: "", author: "" });
+//           clearCurrentPost();
+//         }
+//       } catch (error) {
+//         console.error("Failed to fetch blog post:", error);
+//         setPosts({ content: "", author: "" });
+//         clearCurrentPost();
+//       }
+//     };
 
-export function useBlogController() {
-  const {
-    posts,
-    setPosts,
-    isEdited,
-    setIsEdited,
-    currentPost,
-    setCurrentPost,
-    clearCurrentPost,
-  } = useBlogState();
+//     fetchData();
+//   }, [selectDate]);
+// }
 
-  const { handleLikey, handleSave, handleDelete } = useBlogActions(
-    posts,
-    setIsEdited
-  );
+// export function useBlogController() {
+//   const {
+//     posts,
+//     setPosts,
+//     isEdited,
+//     setIsEdited,
+//     currentPost,
+//     setCurrentPost,
+//     clearCurrentPost,
+//   } = useBlogState();
 
-  useBlogData(setPosts, setCurrentPost, clearCurrentPost);
+//   const { handleLikey, handleSave, handleDelete } = useBlogActions(
+//     posts,
+//     setIsEdited
+//   );
 
-  const handleEdit = () => setIsEdited(true);
+//   useBlogData(setPosts, setCurrentPost, clearCurrentPost);
 
-  const handleCancel = () => {
-    setIsEdited(false);
-    setPosts((prev) => ({
-      ...prev,
-      content: currentPost?.content || "",
-    }));
-  };
+//   const handleEdit = () => setIsEdited(true);
 
-  const handleContentChange = (value: string) => {
-    setPosts((prev) => ({ ...prev, content: value }));
-  };
+//   const handleCancel = () => {
+//     setIsEdited(false);
+//     setPosts((prev) => ({
+//       ...prev,
+//       content: currentPost?.content || "",
+//     }));
+//   };
 
-  return {
-    posts,
-    currentPost,
-    isEdited,
-    handleEdit,
-    handleSave,
-    handleContentChange,
-    handleDelete,
-    handleCancel,
-    handleLikey,
-  };
-}
+//   const handleContentChange = (value: string) => {
+//     setPosts((prev) => ({ ...prev, content: value }));
+//   };
+
+//   return {
+//     posts,
+//     currentPost,
+//     isEdited,
+//     handleEdit,
+//     handleSave,
+//     handleContentChange,
+//     handleDelete,
+//     handleCancel,
+//     handleLikey,
+//   };
+// }
