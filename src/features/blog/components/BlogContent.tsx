@@ -1,14 +1,14 @@
 import { TextEditor } from "@/components/TextEditor";
 import { CurrentPost } from "@/store/blog/currentPostStore";
 import BlogSlider from "./BlogSlider";
-import BlogPagination from "./BlogPagination";
-import { useState } from "react";
 
 interface BlogContentProps {
   isEdited: boolean;
   posts: CurrentPost | null;
   currentPost: CurrentPost | null;
   handleContentChange: (content: string) => void;
+  currentSlide: number;
+  onSlideChange: (slide: number) => void;
 }
 
 function BlogContent({
@@ -16,9 +16,9 @@ function BlogContent({
   posts,
   currentPost,
   handleContentChange,
+  currentSlide,
+  onSlideChange,
 }: BlogContentProps) {
-  const [currentSlide, setCurrentSlide] = useState(0);
-
   if (isEdited) {
     return (
       <div className="p-2 flex-1 h-full font-mono">
@@ -31,27 +31,20 @@ function BlogContent({
   }
 
   if (!currentPost) {
-    return <p className="p-2">일기가 존재하지 않습니다.</p>;
+    return (
+      <p className="relative flex-1 h-full pl-6 pr-4 py-4 font-mono">
+        일기가 존재하지 않습니다.
+      </p>
+    );
   }
-
-  const contentSections = currentPost.content
-    .split(/(?=\d+\.)/)
-    .filter((section) => section.trim() && section !== "<p>");
 
   return (
     <div className="relative flex-1 h-full group">
       <BlogSlider
         content={currentPost.content}
         currentSlide={currentSlide}
-        onSlideChange={setCurrentSlide}
+        onSlideChange={onSlideChange}
       />
-      <div className="absolute bottom-0 left-0 right-0 h-16 flex items-center justify-center bg-gradient-to-t from-white to-transparent">
-        <BlogPagination
-          currentSlide={currentSlide}
-          totalSlides={contentSections.length}
-          onSlideChange={setCurrentSlide}
-        />
-      </div>
     </div>
   );
 }

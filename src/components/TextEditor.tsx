@@ -18,7 +18,7 @@ export function TextEditor({ value, setValue }: TextEditorProps) {
       theme="snow"
       value={value}
       onChange={setValue}
-      style={{ height: "260px" }}
+      style={{ height: "320px" }}
     />
   );
 }

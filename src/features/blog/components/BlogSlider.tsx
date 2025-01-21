@@ -59,7 +59,7 @@ const BlogSlider = ({
 
   return (
     <div
-      className="relative h-[370px] font-mono group pl-6 pr-4 flex flex-col"
+      className="relative h-[356px] font-mono group pl-6 pr-4 flex flex-col"
       tabIndex={0}
       onKeyDown={handleKeyDown}
       aria-label="블로그 컨텐츠 슬라이더"
@@ -80,11 +80,11 @@ const BlogSlider = ({
       </div>
 
       <div
-        className="h-[364px] overflow-y-auto scrollbar-hide relative z-[2] mask-linear"
+        className="h-[350px] overflow-y-auto scrollbar-hide relative z-[2] mask-linear"
         onScroll={handleScroll}
       >
         <ReactMarkdown
-          className="transition-all duration-300 ease-in-out py-4 leading-relaxed break-keep"
+          className="transition-all duration-300 ease-in-out py-2 leading-relaxed break-keep"
           rehypePlugins={[rehypeRaw]}
           remarkPlugins={[remarkGfm]}
         >
@@ -99,7 +99,7 @@ const BlogSlider = ({
       />
 
       <div
-        className={`absolute bottom-0 left-0 right-0 h-4 bg-gradient-to-t from-white to-transparent z-[3] transition-opacity duration-300 ${
+        className={`absolute bottom-0 left-0 right-0 h-10 bg-gradient-to-t from-white to-transparent z-[3] transition-opacity duration-300 ${
           isScrolledToBottom ? "opacity-0" : "opacity-100"
         }`}
       />

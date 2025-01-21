@@ -13,7 +13,7 @@ import "@/app/globals.css";
 const ProfilePage = () => {
   return (
     <div>
-      <div className="grid gap-8 pr-3 grid-cols-[1fr_2fr]">
+      <div className="grid gap-8 grid-cols-[1fr_2fr]">
         <Image
           src={profileImg}
           alt="profile"
