@@ -57,7 +57,22 @@ const ProfilePage = () => {
             </a>
           </div>
         </div>
-        <div className="col-span-2">안녕하세요</div>
+        <div className="col-span-2 font-mono leading-relaxed">
+          Next.js, Typescript, TailwindCSS, zustand, mongoDB, Vercel
+          <br />
+          저는 티스토리 블로그를 3년째 운영해오고 있는데요,
+          <br />
+          제가 느낀 점들에 대해 가감없이 그대로 표현해낼 수 있다는 점이
+          매력적으로 다가왔습니다.
+          <br />
+          다만 개발 내용 위주의 티스토리 블로그에서 개인적인 이야기까지 적기엔
+          다소 무리가 있어 개인적인 이야기를 담을 수 있는 블로그를
+          제작하였습니다.
+          <br />
+          테마는 "싸이월드"에서 따왔습니다. 좌측 달력의 날짜를 클릭해 다른 글을
+          볼 수 있습니다. 이후에도 채팅 등의 기능을 꾸준히 업데이트할
+          예정입니다.
+        </div>
       </div>
     </div>
   );

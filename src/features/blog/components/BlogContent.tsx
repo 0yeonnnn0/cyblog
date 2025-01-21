@@ -18,7 +18,7 @@ function BlogContent({
   handleContentChange,
 }: BlogContentProps) {
   return (
-    <div className="blog-content p-2 flex-1 h-full font-mono">
+    <div className="blog-content p-2 flex-1 h-full font-mono leading-relaxed">
       {isEdited ? (
         <TextEditor
           value={posts?.content || ""}

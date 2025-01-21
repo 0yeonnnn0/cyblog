@@ -37,7 +37,12 @@ export const formatDateToYYYYMMDD = (date: Date): string => {
 /**
  * YYYY-MM-DD 형식의 문자열을 "YYYY년 MM월 DD일" 형식으로 변환
  */
-export const formatDateToKorean = (dateString: string): string => {
+export const formatDateToKorean = (
+  dateString: string
+): { date: string; suffix: string } => {
   const [year, month, day] = dateString.split("-");
-  return `${year}년 ${Number(month)}월 ${Number(day)}일`;
+  return {
+    date: `${year}. ${month.padStart(2, "0")}. ${day.padStart(2, "0")}`,
+    suffix: "의 일기",
+  };
 };

@@ -5,8 +5,9 @@ export function DateView() {
   const { selectDate } = useSelectDateStore();
 
   return (
-    <time className="block mb-3 text-gray-600 font-medium">
-      {formatDateToKorean(selectDate)}
+    <time className="block  text-gray-600 font-medium">
+      <span>{formatDateToKorean(selectDate).date}</span>
+      <span>{formatDateToKorean(selectDate).suffix}</span>
     </time>
   );
 }
