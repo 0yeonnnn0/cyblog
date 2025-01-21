@@ -54,6 +54,9 @@
       "@/model/*": [
         "src/model/*"
       ],
+      "@/features/*": [
+        "src/features/*"
+      ]
     }
   },
   "include": [

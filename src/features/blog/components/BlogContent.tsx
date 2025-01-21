@@ -11,7 +11,7 @@ interface BlogContentProps {
   onSlideChange: (slide: number) => void;
 }
 
-function BlogContent({
+export function BlogContent({
   isEdited,
   posts,
   currentPost,
@@ -48,5 +48,3 @@ function BlogContent({
     </div>
   );
 }
-
-export default BlogContent;
