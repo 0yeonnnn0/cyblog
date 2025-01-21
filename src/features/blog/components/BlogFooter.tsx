@@ -3,66 +3,42 @@ import { useEditStatusStore } from "@/store/blog/editStatusStore";
 import { useUserStore } from "@/store/userStore";
 import { BlogButton } from "@/features/blog/components/BlogButton";
 import { useCurrentPostStore } from "@/store/blog/currentPostStore";
+import { BlogPagination } from "@/features/blog/components/BlogPagination";
 
 interface BlogFooterProps {
   handleLikey: (postId: string) => Promise<void>;
-  handleEdit: () => void;
-  handleSave: () => void;
-  handleCancel: () => void;
-  handleDelete: () => void;
+  currentSlide: number;
+  totalSlides: number;
+  onSlideChange: (slide: number) => void;
 }
+
 export function BlogFooter({
-  handleLikey,
-  handleDelete,
-  handleCancel,
-  handleSave,
-  handleEdit,
+  currentSlide,
+  totalSlides,
+  onSlideChange,
 }: BlogFooterProps) {
-  const user = useUserStore((state) => state.user);
   const isEdited = useEditStatusStore((state) => state.isEdited);
   const currentPost = useCurrentPostStore((state) => state.currentPost);
 
-  if (!user) return null;
+  if (!currentPost && !isEdited) return null;
 
   return (
-    <footer className="flex justify-between border-t-2 border-gray-300 border-dashed px-4 pt-3">
-      <div className="flex items-center">
+    <footer className="relative flex justify-center items-end border-gray-300 border-dashed h-full">
+      {/* <div className="flex items-center">
         {currentPost && (
           <LikeButton
             count={currentPost.likey || 0}
             onLike={() => handleLikey(currentPost._id as string)}
           />
         )}
-      </div>
+      </div> */}
 
-      {user?.isAdmin && (
-        <div className="flex gap-2">
-          {isEdited ? (
-            <>
-              <BlogButton
-                variant="secondary"
-                text="취소"
-                onClick={handleCancel}
-              />
-              <BlogButton variant="primary" text="저장" onClick={handleSave} />
-            </>
-          ) : (
-            <>
-              <BlogButton
-                variant="secondary"
-                text="수정"
-                onClick={handleEdit}
-              />
-              {currentPost && (
-                <BlogButton
-                  variant="danger"
-                  text="삭제"
-                  onClick={handleDelete}
-                />
-              )}
-            </>
-          )}
-        </div>
+      {!isEdited && (
+        <BlogPagination
+          currentSlide={currentSlide}
+          totalSlides={totalSlides}
+          onSlideChange={onSlideChange}
+        />
       )}
     </footer>
   );

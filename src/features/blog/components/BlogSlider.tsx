@@ -80,7 +80,7 @@ const BlogSlider = ({
       </div>
 
       <div
-        className="h-[364px] overflow-y-auto scrollbar-hide relative z-[2] mask-linear"
+        className="h-[360px] overflow-y-auto scrollbar-hide relative z-[2] mask-linear"
         onScroll={handleScroll}
       >
         <ReactMarkdown
@@ -99,7 +99,7 @@ const BlogSlider = ({
       />
 
       <div
-        className={`absolute bottom-0 left-0 right-0 h-4 bg-gradient-to-t from-white to-transparent z-[3] transition-opacity duration-300 ${
+        className={`absolute bottom-0 left-0 right-0 h-10 bg-gradient-to-t from-white to-transparent z-[3] transition-opacity duration-300 ${
           isScrolledToBottom ? "opacity-0" : "opacity-100"
         }`}
       />

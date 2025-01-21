@@ -4,13 +4,13 @@ interface BlogPaginationProps {
   onSlideChange: (index: number) => void;
 }
 
-const BlogPagination = ({
+export const BlogPagination = ({
   currentSlide,
   totalSlides,
   onSlideChange,
 }: BlogPaginationProps) => {
   return (
-    <div className="absolute bottom-0 left-1/2 -translate-x-1/2 flex gap-2 z-20">
+    <div className="flex gap-2">
       {Array.from({ length: totalSlides }).map((_, index) => (
         <button
           key={index}
@@ -24,5 +24,3 @@ const BlogPagination = ({
     </div>
   );
 };
-
-export default BlogPagination;
