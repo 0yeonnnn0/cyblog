@@ -80,7 +80,7 @@ export function DateView({
 
   if (!user?.isAdmin) {
     return (
-      <time className="block text-gray-600 font-medium">
+      <time className="block text-gray-600 font-medium text-lg">
         <span>{formatDateToKorean(selectDate).date}</span>
         <span>{formatDateToKorean(selectDate).suffix}</span>
       </time>
@@ -88,9 +88,9 @@ export function DateView({
   }
 
   return (
-    <div className="relative">
+    <div className="relative group">
       <time
-        className="block text-gray-600 font-medium cursor-pointer hover:text-gray-800 transition-colors"
+        className="text-gray-600 font-medium text-lg cursor-pointer hover:text-gray-500 transition-all duration-200 flex items-center gap-1"
         onClick={handleClick}
         onKeyDown={handleKeyDown}
         tabIndex={0}
@@ -99,14 +99,24 @@ export function DateView({
       >
         <span>{formatDateToKorean(selectDate).date}</span>
         <span>{formatDateToKorean(selectDate).suffix}</span>
+        <svg
+          className="w-4 h-4 opacity-0 group-hover:opacity-100 transition-opacity duration-200"
+          fill="none"
+          viewBox="0 0 24 24"
+          stroke="currentColor"
+        >
+          <path
+            strokeLinecap="round"
+            strokeLinejoin="round"
+            strokeWidth={2}
+            d="M19 9l-7 7-7-7"
+          />
+        </svg>
       </time>
 
       {isModalOpen && (
         <>
-          <div
-            className="fixed inset-0 z-40"
-            onClick={handleClose}
-          />
+          <div className="fixed inset-0 z-40" onClick={handleClose} />
           <div
             className="absolute bg-white rounded-lg p-2 shadow-lg min-w-[200px] z-50"
             style={{
