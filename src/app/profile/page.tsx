@@ -7,6 +7,7 @@ import {
   faEnvelope,
   faLaptopCode,
   faUser,
+  faFolder,
 } from "@fortawesome/free-solid-svg-icons";
 import "@/app/globals.css";
 
@@ -14,14 +15,21 @@ const ProfilePage = () => {
   return (
     <div>
       <div className="grid gap-8 grid-cols-[1fr_2fr]">
-        <Image
-          src={profileImg}
-          alt="profile"
-          className="h-[210px] rounded-[10px]"
-          width={150}
-          height={150}
-          priority={true}
-        />
+        <a
+          href="https://my.surfit.io/w/184935504"
+          target="_blank"
+          rel="noopener noreferrer"
+          className="cursor-pointer"
+        >
+          <Image
+            src={profileImg}
+            alt="profile"
+            className="h-[210px] rounded-[10px] hover:opacity-80 transition-opacity"
+            width={150}
+            height={150}
+            priority={true}
+          />
+        </a>
         <div className="flex flex-col gap-5 mt-4">
           <div className="flex flex-row gap-3">
             <div className="w-6 flex items-center justify-center">
@@ -46,6 +54,19 @@ const ProfilePage = () => {
               className="underline "
             >
               ON GITHUB
+            </a>
+          </div>
+          <div className="flex flex-row gap-3">
+            <div className="w-6 flex items-center justify-center">
+              <FontAwesomeIcon icon={faFolder} />
+            </div>
+            <a
+              href="https://my.surfit.io/w/184935504"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="underline"
+            >
+              PORTFOLIO
             </a>
           </div>
           <div className="flex flex-row gap-3">
