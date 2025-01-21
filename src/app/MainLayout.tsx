@@ -26,7 +26,9 @@ export default function MainLayout({ children }: { children: ReactNode }) {
           <BlogTitle />
           <HPPostIt />
           <div className="w-content-right bg-white border-solid border-gray-400 border-3 h-content rounded-2xl m-content-right p-content-right">
-            <div className="h-full overflow-auto">{children}</div>
+            <div className="h-full overflow-auto scrollbar-hide">
+              {children}
+            </div>
           </div>
         </div>
       </div>
