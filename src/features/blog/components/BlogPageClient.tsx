@@ -6,14 +6,14 @@ import { useBlogPost } from "../hooks/useBlogPost";
 import { DateView } from "./DateView";
 import { BlogContent } from "./BlogContent";
 import { BlogFooter } from "./BlogFooter";
+import { useEditStatusStore } from "@/store/blog/editStatusStore";
 
 export default function BlogPageClient() {
   const selectDate = useSelectDateStore((state) => state.selectDate);
   const [currentSlide, setCurrentSlide] = useState(0);
-  const [isEdited, setIsEdited] = useState(false);
   const [content, setContent] = useState("");
-
   const { currentPost, mutations } = useBlogPost(selectDate);
+  const { isEdited, setIsEdited } = useEditStatusStore();
 
   useEffect(() => {
     if (currentPost?.content) {
@@ -41,7 +41,6 @@ export default function BlogPageClient() {
   return (
     <div className="flex flex-col content-between h-full">
       <DateView
-        handleEdit={() => setIsEdited(true)}
         handleCancel={() => {
           setIsEdited(false);
           setContent(currentPost?.content || "");

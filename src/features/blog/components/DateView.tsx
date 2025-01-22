@@ -5,20 +5,19 @@ import { useEditStatusStore } from "@/store/blog/editStatusStore";
 import { useUserStore } from "@/store/userStore";
 
 interface DateViewProps {
-  handleEdit: () => void;
   handleCancel: () => void;
   handleSave: () => void;
   handleDelete: () => void;
 }
 
 export function DateView({
-  handleEdit,
   handleCancel,
   handleSave,
   handleDelete,
 }: DateViewProps) {
   const { selectDate } = useSelectDateStore();
   const isEdited = useEditStatusStore((state) => state.isEdited);
+  const setIsEdited = useEditStatusStore((state) => state.setIsEdited);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [position, setPosition] = useState({ x: 0, y: 0 });
 
@@ -58,22 +57,25 @@ export function DateView({
   };
 
   const handleEditClick = () => {
-    handleEdit();
+    setIsEdited(true);
     handleClose();
   };
 
   const handleSaveClick = () => {
     handleSave();
+    setIsEdited(false);
     handleClose();
   };
 
   const handleCancelClick = () => {
     handleCancel();
+    setIsEdited(false);
     handleClose();
   };
 
   const handleDeleteClick = () => {
     handleDelete();
+    setIsEdited(false);
     handleClose();
   };
 
