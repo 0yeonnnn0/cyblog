@@ -13,7 +13,13 @@ export default function BlogPageClient() {
   const [currentSlide, setCurrentSlide] = useState(0);
   const [content, setContent] = useState("");
   const { currentPost, mutations } = useBlogPost(selectDate);
-  const { isEdited, setIsEdited } = useEditStatusStore();
+  // 상태 관리 - 사용, zustand는 상태를 구독하는 것이 더 효과적임,
+  // 상태 변경이 발생했을 때 필요한 컴포넌트만 리렌더링하기 때문
+  // const { isEdited, setIsEdited } = useEditStatusStore();
+
+  // 상태 관리 - 구독
+  const isEdited = useEditStatusStore((state) => state.isEdited);
+  const setIsEdited = useEditStatusStore((state) => state.setIsEdited);
 
   useEffect(() => {
     if (currentPost?.content) {
