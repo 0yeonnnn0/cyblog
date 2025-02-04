@@ -1,0 +1,9 @@
+# *
+User-agent: *
+Allow: /
+
+# Host
+Host: https://cyblog.vercel.app
+
+# Sitemaps
+Sitemap: https://cyblog.vercel.app/sitemap.xml
